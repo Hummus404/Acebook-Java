@@ -19,9 +19,18 @@
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
-    <ul th:each="post: ${posts}">
-        <li th:text="${post.content}" />
+    <ul>
+        <li th:each="post: ${posts}">
+            <span th:text="${post.content}"></span>
+            &mdash; <span th:text="${post.likes}"></span> likes <!-- mdash adds hyphen between post and like count -->
+            <form th:action="@{/posts/{id}/like(id=${post.id})}"
+                  method="post" style="display:inline">
+                <button type="submit">Like</button>
+            </form>
+        </li>
     </ul>
+
+
 
     </body>
 </html>
