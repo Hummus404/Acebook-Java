@@ -13,6 +13,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
+    private Integer likes = 0;
 
     public Post() {}
 

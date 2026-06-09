@@ -29,4 +29,13 @@ public class PostsController {
         repository.save(post);
         return new RedirectView("/posts");
     }
+
+    @PostMapping("/posts/{id}/like")
+    public RedirectView like(@PathVariable Long id) {
+        Post post = repository.findById(id).orElseThrow();
+        int current = post.getLikes() == null ? 0 : post.getLikes(); // likes are nullable in v3, handles for that
+        post.setLikes(current + 1);
+        repository.save(post);
+        return new RedirectView("/posts");
+    }
 }
