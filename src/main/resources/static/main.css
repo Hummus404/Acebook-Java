@@ -1,10 +1,36 @@
-.posts-main {
-    border-collapse: collapse;
+/*.posts-main {*/
+/*    border-collapse: collapse;*/
+/*}*/
+
+/*.post-main {*/
+/*    border: 1px solid #999;*/
+/*    padding: 0.5rem;*/
+/*    text-align: left;*/
+/*    margin-bottom: 0.5rem;;*/
+/*}*/
+
+
+/* Navigation bar */
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #333333;
+    display: flex;
 }
 
-.post-main {
-    border: 1px solid #999;
-    padding: 0.5rem;
-    text-align: left;
-    margin-bottom: 0.5rem;;
+ul li a {
+    display: block;
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul li a:hover {
+    background-color: #111111;
+}
+
+.nav_bar {
+
 }
