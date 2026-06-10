@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head lang="en">
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Acebook</title>
+		<link rel="stylesheet" th:href="@{/main.css}"/>
+	</head>
+
+	<body>
+		<div class="hero">
+			<nav class="nav" th:fragment="header">
+
+				<a th:href="@{/posts}"><img th:src="@{/images/acebook_logo.png}" alt="logo" class="logo"></a>
+				<ul>
+					<li><a th:href="@{/posts}">Home</a></li>
+					<li><a th:href="@{#}">Friends</a></li>
+				</ul>
+
+				<div class="user-menu">
+					<img th:src="@{/images/user_img.jpg}" alt="user-img" class="user-img">
+
+					<div class="sub-menu-wrap" id="subMenu">
+						<div class="sub-menu">
+							<div class="user-info">
+								<img th:src="@{/images/user_img.jpg}" alt="user-img" class="user-img">
+								<h3>Hira Mir</h3>
+							</div>
+							<hr>
+
+							<a th:href="@{#}" class="sub-menu-link">
+								<img th:src="@{/images/circle-user.svg}" alt="edit profile icon">
+								<p>Edit profile</p>
+								<span>></span>
+							</a>
+							<a th:href="@{#}" class="sub-menu-link">
+								<img th:src="@{/images/exit.svg}" alt="exit icon" style="transform: scaleX(-1);">
+								<p>Logout</p>
+								<span>></span>
+							</a>
+
+						</div>
+					</div>
+				</div>
+
+			</nav>
+		</div>
+
+	</body>
+
+</html>
