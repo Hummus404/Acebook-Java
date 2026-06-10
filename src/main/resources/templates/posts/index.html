@@ -22,8 +22,8 @@
 
     <ul>
         <li th:each="post : ${posts}">
+        <img th:if="${post.image != null and post.image.trim().length() > 0}" th:src="@{'/images/' + ${post.image}}" width="300"/>
         <p th:text="${post.content}"></p>
-        <img th:if="${post.image != null and !#strings.isEmpty(post.image)}" th:src="@{'/images/' + ${post.image}}" width="300"/>
         </li>
 
     </ul>

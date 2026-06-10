@@ -37,21 +37,18 @@ public class PostsController {
         // Could implement a try catch block at a later point
 
         Path uploadDir = Paths.get("images");
-        Files.createDirectories(uploadDir);
+                Files.createDirectories(uploadDir);
 
-        String filename = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-
-        Path filePath = uploadDir.resolve(filename);
-
-        Files.copy(
-                image.getInputStream(),
-                filePath,
-                StandardCopyOption.REPLACE_EXISTING
-        );
-
-        post.setImage(filename);
-        System.out.println("HELLO");
-        System.out.println(filePath.toString());
+        if (!image.isEmpty()) {
+            String filename = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+            Path filePath = uploadDir.resolve(filename);
+            Files.copy(
+                    image.getInputStream(),
+                    filePath,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+            post.setImage(filename);
+        }
 
         repository.save(post);
 
