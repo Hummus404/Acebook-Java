@@ -112,7 +112,31 @@ public class PostWithImageTest {
     }
 
 
+    @Test
+    public void emptyPostIsNotSubmitted() {
+        System.out.println(System.getProperty("user.dir"));
+        String email = faker.name().username() + "@email.com";
 
+        driver.get("http://localhost:8081/");
+        driver.findElement(By.name("username")).sendKeys("test@email.com");
+        driver.findElement(By.name("password")).sendKeys("P@55qw0rd");
+        driver.findElement(By.name("action")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        WebElement submitBtn = wait.until(
+                ExpectedConditions.elementToBeClickable(By.className("submit-btn"))
+        );
+
+        submitBtn.click();
+
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+
+        assertEquals("Both image and content fields cannot be empty", alert.getText());
+
+        alert.accept();
+
+    }
 
 
 }
