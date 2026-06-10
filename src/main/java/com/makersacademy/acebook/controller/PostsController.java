@@ -31,8 +31,8 @@ public class PostsController {
         return "posts/index";
     }
 
-    @PostMapping("/posts")
-    public RedirectView create(@ModelAttribute Post post, @RequestParam("image") MultipartFile image) throws IOException {
+    @PostMapping("/posts/new")
+    public RedirectView create(@ModelAttribute Post post, @RequestParam("imageFile") MultipartFile image) throws IOException {
 
         // Could implement a try catch block at a later point
 
@@ -49,11 +49,11 @@ public class PostsController {
                 StandardCopyOption.REPLACE_EXISTING
         );
 
-        repository.save(post);
-
-        post.setImage(filePath.toString());
+        post.setImage(filename);
         System.out.println("HELLO");
         System.out.println(filePath.toString());
+
+        repository.save(post);
 
         return new RedirectView("/posts");
     }

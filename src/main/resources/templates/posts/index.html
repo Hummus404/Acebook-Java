@@ -14,14 +14,18 @@
         Signed in as <span sec:authentication="principal.attributes['email']"></span>
     </div>
 
-    <form action="#" th:action="@{/posts}" th:object="${post}" method="post" enctype="multipart/form-data">
+    <form action="#" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
         <p>Content: <input type="text" th:field="*{content}" /></p>
-        <p><input type="file" name="image"></p>
+        <p><input type="file" name="imageFile"></p>
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
-    <ul th:each="post: ${posts}">
-        <li th:text="${post.content}" />
+    <ul>
+        <li th:each="post : ${posts}">
+        <p th:text="${post.content}"></p>
+        <img th:if="${post.image != null and !#strings.isEmpty(post.image)}" th:src="@{'/images/' + ${post.image}}" width="300"/>
+        </li>
+
     </ul>
 
     </body>
