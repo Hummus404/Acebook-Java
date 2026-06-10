@@ -23,7 +23,8 @@ public class User {
     private String profile_picture;
     private String first_name;
     private String surname;
-    private String email_address;
+    @Column (name = "EMAIL_ADDRESS")
+    private String emailAddress;
     private String friends;
     private String blocked;
 
@@ -37,13 +38,13 @@ public class User {
         this.enabled = TRUE;
     }
 
-    public User(String username, boolean enabled, String profile_picture,String first_name, String surname, String email_address, String friends, String blocked) {
+    public User(String username, boolean enabled, String profile_picture,String first_name, String surname, String emailAddress, String friends, String blocked) {
         this.username = username;
         this.enabled = enabled;
         this.profile_picture = profile_picture;
         this.first_name = first_name;
         this.surname = surname;
-        this.email_address = email_address;
+        this.emailAddress = emailAddress;
         this.friends = friends;
         this.blocked = blocked;
     }
