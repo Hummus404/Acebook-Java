@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface LikeRepository extends CrudRepository<Like, Long> {
     long countByPostId(long postId); // displays count
 
-    Optional<Like> findByPostIdAndUserId(Long postId, Long userID); // toggle
+    Optional<Like> findByPostIdAndUserId(Long postId, Long userID); // toggle implementation
 
     boolean existsByPostIdAndUserId(Long postId, Long userId); // button labelling
 
