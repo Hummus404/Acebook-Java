@@ -95,7 +95,9 @@ nav ul li a {
     margin-left: 0;
 }
 
-.user-info h3 {
+.user-info h3 a {
+    text-decoration: none;
+    color: #525252;
     font-weight: 500;
     font-size: 16px;
 }
