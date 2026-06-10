@@ -67,8 +67,9 @@ public class PostsController {
 
     private User currentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth == null || !(auth.getPrincipal() instanceof
-                    DefaultOidcUser oidc)) return null;
+            if (auth == null || !(auth.getPrincipal() instanceof DefaultOidcUser oidc)) return null;
+            String email = (String) oidc.getAttribute().get("email");
+            return userRepository.findUserByUsername(email).orElse(null);
     }
 
 }
