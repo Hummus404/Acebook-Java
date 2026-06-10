@@ -49,7 +49,7 @@ public class PostWithImageTest {
 
         driver.findElement(By.name("imageFile")).sendKeys("/Users/MakersAdmin/Documents/Projects/Acebook-Java/images/1781088986755_how-could-they-466cd61395.jpg");
 
-        driver.findElement(By.name("submit-btn")).click();
+        driver.findElement(By.className("submit-btn")).click();
 
         int after = driver.findElements(By.cssSelector("li img")).size();
 
@@ -68,13 +68,16 @@ public class PostWithImageTest {
         driver.findElement(By.name("password")).sendKeys("P@55qw0rd");
         driver.findElement(By.name("action")).click();
 
-        driver.findElement(By.name("input-content-field")).sendKeys("This is a content");
+        String dummyInputText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel lorem cursus quam gravida sagittis. Cras ac placerat erat. Donec efficitur venenatis augue in fermentum. Cras finibus condimentum nunc, in ornare elit malesuada eu. Fusce sagittis mollis justo eget vehicula. Nullam tristique luctus sapien nec bibendum. Vivamus pretium mauris eget.";
 
-        driver.findElement(By.name("submit-btn")).click();
 
-        WebElement contentText = driver.findElement(By.tagName("p"));
+        driver.findElement(By.className("input-content-field")).sendKeys(dummyInputText);
+        driver.findElement(By.className("submit-btn")).click();
 
-        assertEquals("This is a content", contentText.getText());
+        String pageText = driver.findElement(By.tagName("body")).getText();
+        assertTrue(pageText.contains(dummyInputText));
+
+
 
     }
 
