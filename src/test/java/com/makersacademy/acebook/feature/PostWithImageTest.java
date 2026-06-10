@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class PostWithImageTest {
@@ -32,6 +33,7 @@ public class PostWithImageTest {
     // 3. post is now rendered with the image showing
     @Test
     public void successfulImageUpload() {
+        System.out.println(System.getProperty("user.dir"));
         String email = faker.name().username() + "@email.com";
 
         driver.get("http://localhost:8081/");
@@ -39,9 +41,10 @@ public class PostWithImageTest {
         driver.findElement(By.name("username")).sendKeys("test@email.com");
         driver.findElement(By.name("password")).sendKeys("P@55qw0rd");
         driver.findElement(By.name("action")).click();
-        //driver.findElement(By.name("image")).sendKeys("/Users/MakersAdmin/Documents/Projects/Acebook-Java/images/random-img.jpg");
-//        driver.findElement(By.name("image")).sendKeys("Acebook-Java/images/TestImage.jpg");
-//        driver.findElement(By.name("action")).click();
+        driver.findElement(By.name("imageFile")).sendKeys("/Users/MakersAdmin/Documents/Projects/Acebook-Java/images/1781088986755_how-could-they-466cd61395.jpg");
+        driver.findElement(By.name("submit-btn")).click();
+
+
 
     }
 
