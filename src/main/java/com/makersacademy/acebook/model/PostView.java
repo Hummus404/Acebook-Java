@@ -7,4 +7,4 @@ public class PostView {
     private final Post post;
     private final long likeCount;
     private final boolean likedByMe;
-} //
+}
