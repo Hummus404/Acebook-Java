@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+            xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Sign up</title>
+        <link rel="stylesheet" href="/main.css" />
+    </head>
+
+    <body>
+    <form th:action="@{/sign_up/new}" th:object="${sign_up}" method="post" enctype="multipart/form-data">
+        <label th:for="username">Username:</label>
+        <input type="text" placeholder="Choose a username" th:field="*{username}"/> <br>
+        <label th:for="first_name">First Name:</label>
+        <input type="text" th:placeholder="${firstName}" th:field="*{first_name}"/> <br>
+        <label th:for="surname">Surname:</label>
+        <input type="text" th:placeholder="${surname}" th:field="*{surname}"/> <br>
+<!--        <label>Upload a profile picture</label>-->
+<!--        <input type="file" name="profile_picture"><br>-->
+        <input type="submit" value="Submit"/>
+        <input type="reset" value="Reset" />
+    </form>
+
+    </body>
+</html>
