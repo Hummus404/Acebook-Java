@@ -42,7 +42,7 @@ public class PostsController {
         }
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
-        return "post/index";
+        return "posts/index";
     }
 
     @PostMapping("/posts")

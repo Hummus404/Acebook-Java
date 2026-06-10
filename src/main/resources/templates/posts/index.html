@@ -18,6 +18,17 @@
         <p>Content: <input type="text" th:field="*{content}" /></p>
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
+    <ul>
+        <li th:each="pv : ${postViews}">
+            <span th:text="${pv.post.content}"></span>
+            &mdash; <span class="like-count"
+            th:text="${pv.likeCount}"></span> likes
+            <form th:action="@{/posts/{id}/like(id=${pv.post.id})}"
+                  method="post" style="display:inline">
+                <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
+            </form>
+        </li>
+    </ul>
 
     <ul>
         <li th:each="post: ${posts}">
