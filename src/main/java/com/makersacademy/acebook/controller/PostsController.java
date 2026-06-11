@@ -55,6 +55,7 @@ public class PostsController {
         }
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
+        Iterable<Post> posts = repository.findAll();
         model.addAttribute("posts", posts);
         return "posts/index";
     }
