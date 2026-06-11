@@ -46,24 +46,32 @@ public class PostsController {
 
 //    @GetMapping("/posts")
 //    public String index(Model model) {
-//        Iterable<Post> posts = repository.findAll();
+//        Iterable<PostView> posts = repository.findAll();
 //        model.addAttribute("posts", posts);
-//        model.addAttribute("post", new Post());
+//        model.addAttribute("post", new PostView());
 //        return "posts/index";
 //    }
-
+//
     @GetMapping("/posts")
     public String index(Model model) {
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
+
         for (Post post : repository.findAll()) {
             long count = likeRepository.countByPostId(post.getId());
+
             boolean liked = me != null &&
                     likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
             postViews.add(new PostView(post, count, liked));
+            System.out.println("POST VIEWS: ");
+            System.out.println(postViews);
         }
+        Iterable<Post> posts = repository.findAll();
+        System.out.println("posts: ");
+        System.out.println(posts);
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
+        model.addAttribute("posts", posts);
         return "posts/index";
     }
 
