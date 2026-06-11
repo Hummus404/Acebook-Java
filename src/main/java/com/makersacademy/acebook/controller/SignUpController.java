@@ -44,10 +44,7 @@ public class SignUpController {
         Optional<User> uniqueUser = userRepository.findUserByEmailAddress(emailAddress);
 
         if (uniqueUser.isPresent()){
-            ModelAndView model = new ModelAndView("posts/index");
-            Iterable<Post> posts = repository.findAll();
-            model.addObject("posts", posts);
-            model.addObject("post", new Post());
+            ModelAndView model = new ModelAndView("redirect:/posts");
             return model;
         }
 
@@ -61,7 +58,6 @@ public class SignUpController {
 
         if (principal.getFamilyName() != null) {
             String surname = principal.getAttributes().get("family_name").toString();
-            System.out.println(surname);
             signUp.addObject("surname", surname);
         }
         else{
@@ -97,11 +93,17 @@ public class SignUpController {
             session.setAttribute("uniqueUserBool", null);
         }
 
+        if (session.getAttribute("imageSize") != null){
+            signUp.addObject("imageSize", true);
+            session.setAttribute("imageSize", null);
+        }
+
         return signUp;
     }
 
     @PostMapping("/sign_up/new")
     public RedirectView create(@ModelAttribute User user, HttpSession session, @RequestParam("profile_picture") MultipartFile image) throws IOException  {
+
 
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
@@ -157,23 +159,42 @@ public class SignUpController {
         Path uploadDir = Paths.get("images");
         Files.createDirectories(uploadDir);
 
+
+        System.out.println(image.getSize());
+
+
+
+
         if (!image.isEmpty()) {
-            String filename = System.currentTimeMillis() + "_" + image.getOriginalFilename();
 
-            
 
-            Path filePath = uploadDir.resolve(filename);
-            Files.copy(
-                    image.getInputStream(),
-                    filePath,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-            user.setProfilePicture(filename);
+            if(image.getSize() < 10000000){
+
+                String filename = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+
+
+
+                Path filePath = uploadDir.resolve(filename);
+
+                Files.copy(
+                        image.getInputStream(),
+                        filePath,
+                        StandardCopyOption.REPLACE_EXISTING
+                );
+                user.setProfilePicture(filename);
+            } else {
+                session.setAttribute("imageSize", true);
+                return new RedirectView("/sign_up");
+            }
+
+
         }
         else {
             user.setProfilePicture("defaultProfileAvatar.jpeg");
 
         }
+
+
 
         user.setEmailAddress(principal.getEmail());
 
