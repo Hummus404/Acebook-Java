@@ -40,7 +40,7 @@ public class PostsController {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof DefaultOidcUser oidc)) return null;
         String email = (String) oidc.getAttributes().get("email");
-        return userRepository.findUserByUsername(email).orElse(null);
+        return userRepository.findUserByEmailAddress(email).orElse(null);
     }
 
     @GetMapping("/posts")
@@ -94,15 +94,22 @@ public class PostsController {
 
     @PostMapping("/posts/{id}/like")
     public RedirectView like(@PathVariable Long id) {
+        System.out.println("Hello K");
         User me = currentUser();
+        System.out.println("Hello A");
+
         if (me != null) {
+            System.out.println("Hello B");
+
             likeRepository.findByPostIdAndUserId(id, me.getId()).ifPresentOrElse(
                     likeRepository::delete,
-                // already liked -> unlike
+                    // already liked -> unlike
                     () -> likeRepository.save(new Like(me.getId(), id))
-                // not yet -> like
-                    );
+                    // not yet -> like
+            );
         }
+        System.out.println("Hello C");
+
         return new RedirectView("/posts");
     }
 

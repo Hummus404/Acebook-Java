@@ -8,6 +8,8 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Optional;
+
 @RestController
 public class UsersController {
     @Autowired
@@ -20,11 +22,19 @@ public class UsersController {
                 .getAuthentication()
                 .getPrincipal();
 
-        String username = (String) principal.getAttributes().get("email");
-        userRepository
-                .findUserByUsername(username)
-                .orElseGet(() -> userRepository.save(new User(username)));
+        String emailAddress = (String) principal.getAttributes().get("email");
+//        userRepository
+//                .findUserByUsername(username)
+//                .orElseGet(() -> userRepository.save(new User(username)));
 
-        return new RedirectView("/posts");
+        Optional<User> uniqueUser = userRepository.findUserByEmailAddress(emailAddress);
+
+        if (uniqueUser.isPresent()){
+            return new RedirectView("/posts");
+        }
+        else{
+            return new RedirectView("/sign_up");
+        }
     }
+
 }
