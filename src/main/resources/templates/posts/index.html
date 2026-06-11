@@ -9,6 +9,9 @@
 <body>
 
 <h1>Posts</h1>
+  
+   <div th:replace="~{posts/base :: header}"></div>
+
 
 <div sec:authorize="isAuthenticated()" id="greeting">
     Signed in as <span sec:authentication="principal.attributes['email']"></span>
