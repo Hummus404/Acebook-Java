@@ -32,19 +32,45 @@ public class SignUpController {
                 .getAuthentication()
                 .getPrincipal();
 
-        String firstName = principal.getAttributes().get("given_name").toString();
-        String surname = principal.getAttributes().get("family_name").toString();
-        String emailAddress = principal.getAttributes().get("email").toString();
-
         ModelAndView signUp = new ModelAndView("/sign-up");
+
+        String emailAddress = principal.getAttributes().get("email").toString();
+        System.out.println(emailAddress);
+
+        if (principal.getGivenName() != null) {
+            String firstName = principal.getAttributes().get("given_name").toString();
+            System.out.println(firstName);
+            signUp.addObject("firstName", firstName);
+        }
+        else{
+            signUp.addObject("firstName","Enter first name");
+        }
+
+        if (principal.getFamilyName() != null) {
+            String surname = principal.getAttributes().get("family_name").toString();
+            System.out.println(surname);
+            signUp.addObject("surname", surname);
+        }
+        else{
+            signUp.addObject("surname","Enter surname");
+        }
+
         signUp.addObject("sign_up", user);
-        signUp.addObject("firstName", firstName);
-        signUp.addObject("surname", surname);
         signUp.addObject("emailAddress", emailAddress);
 
         if (session.getAttribute("usernameBlank") != null){
             signUp.addObject("usernameBlank", true);
             session.setAttribute("usernameBlank", null);
+        }
+
+        if (session.getAttribute("noFirstName") != null){
+            signUp.addObject("noFirstName", true);
+            session.setAttribute("noFirstName", null);
+        }
+
+        if (session.getAttribute("noSurname") != null){
+            signUp.addObject("noSurname", true);
+            session.setAttribute("noSurname", null);
         }
 
         if (session.getAttribute("uniqueUserBool") != null){
@@ -78,13 +104,25 @@ public class SignUpController {
         }
 
         if (user.getFirst_name().isBlank()){
-            String firstName = principal.getAttributes().get("given_name").toString();
-            user.setFirst_name(firstName);
+            if (principal.getGivenName() != null) {
+                String firstName = principal.getAttributes().get("given_name").toString();
+                user.setFirst_name(firstName);
+            }
+            else {
+                session.setAttribute("noFirstName", true);
+                return new RedirectView("/sign_up");
+            }
+
         }
 
         if (user.getSurname().isBlank()) {
-            String surname = principal.getAttributes().get("family_name").toString();
-            user.setSurname(surname);
+            if (principal.getFamilyName() != null) {
+                String surname = principal.getAttributes().get("family_name").toString();
+                user.setSurname(surname);
+            } else {
+                session.setAttribute("noSurname", true);
+                return new RedirectView("/sign_up");
+            }
         }
 
         user.setEmailAddress(principal.getEmail());
