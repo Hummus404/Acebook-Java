@@ -47,8 +47,8 @@ public class PostWithImageTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         //int before = driver.findElements(By.cssSelector("li img")).size();
         int before = wait.until(driver -> driver.findElements(By.cssSelector("li img")).size());
-//        driver.findElement(By.name("imageFile")).sendKeys("/Users/MakersAdmin/Documents/Projects/Acebook-Java/images/1781088986755_how-could-they-466cd61395.jpg");
-        driver.findElement(By.name("imageFile")).sendKeys("/Users/umutyilmaz/Desktop/Folders/Special/engineering_project_2/Acebook-Java/images/TestImage.png");
+        driver.findElement(By.name("imageFile")).sendKeys("/Users/MakersAdmin/Downloads/how-could-they-466cd61395.jpg");
+//        driver.findElement(By.name("imageFile")).sendKeys("/Users/umutyilmaz/Desktop/Folders/Special/engineering_project_2/Acebook-Java/images/TestImage.png");
         driver.findElement(By.className("submit-btn")).click();
         int after = driver.findElements(By.cssSelector("li img")).size();
         assertTrue(after > before);
@@ -81,8 +81,8 @@ public class PostWithImageTest {
         driver.findElement(By.name("action")).click();
         String dummyInputText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel lorem cursus quam gravida sagittis. Cras ac placerat erat. Donec efficitur venenatis augue in fermentum. Cras finibus condimentum nunc, in ornare elit malesuada eu. Fusce sagittis mollis justo eget vehicula. Nullam tristique luctus sapien nec bibendum. Vivamus pretium mauris eget.";
 
-//        driver.findElement(By.name("imageFile")).sendKeys("/Users/MakersAdmin/Documents/Projects/Acebook-Java/images/1781088986755_how-could-they-466cd61395.jpg");
-        driver.findElement(By.name("imageFile")).sendKeys("/Users/umutyilmaz/Desktop/Folders/Special/engineering_project_2/Acebook-Java/images/TestImage.png");
+        driver.findElement(By.name("imageFile")).sendKeys("/Users/MakersAdmin/Downloads/how-could-they-466cd61395.jpg");
+//        driver.findElement(By.name("imageFile")).sendKeys("/Users/umutyilmaz/Desktop/Folders/Special/engineering_project_2/Acebook-Java/images/TestImage.png");
         driver.findElement(By.className("input-content-field")).sendKeys(dummyInputText);
         int before = driver.findElements(By.cssSelector("li img")).size();
         driver.findElement(By.className("submit-btn")).click();
