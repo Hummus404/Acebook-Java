@@ -20,7 +20,8 @@ public class User {
     private Long id;
     private String username;
     private boolean enabled;
-    private String profile_picture;
+    @Column (name = "PROFILE_PICTURE")
+    private String profilePicture;
     private String first_name;
     private String surname;
     @Column (name = "EMAIL_ADDRESS")
@@ -38,10 +39,10 @@ public class User {
         this.enabled = TRUE;
     }
 
-    public User(String username, boolean enabled, String profile_picture,String first_name, String surname, String emailAddress, String friends, String blocked) {
+    public User(String username, boolean enabled, String profilePicture,String first_name, String surname, String emailAddress, String friends, String blocked) {
         this.username = username;
         this.enabled = enabled;
-        this.profile_picture = profile_picture;
+        this.profilePicture = profilePicture;
         this.first_name = first_name;
         this.surname = surname;
         this.emailAddress = emailAddress;

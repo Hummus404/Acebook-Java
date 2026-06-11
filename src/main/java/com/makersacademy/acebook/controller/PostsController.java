@@ -50,8 +50,6 @@ public class PostsController {
         );
 
         post.setImage(filename);
-        System.out.println("HELLO");
-        System.out.println(filePath.toString());
 
         repository.save(post);
 

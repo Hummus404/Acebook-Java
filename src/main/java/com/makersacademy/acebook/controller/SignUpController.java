@@ -8,12 +8,17 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import java.io.IOException;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 @RestController
@@ -96,7 +101,8 @@ public class SignUpController {
     }
 
     @PostMapping("/sign_up/new")
-    public RedirectView create(User user, HttpSession session) {
+    public RedirectView create(@ModelAttribute User user, HttpSession session, @RequestParam("profile_picture") MultipartFile image) throws IOException  {
+
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -127,7 +133,8 @@ public class SignUpController {
                 session.setAttribute("bothNamesBlank", true);
                 return new RedirectView("/sign_up");
             }
-        } else if (user.getFirst_name().isBlank()) {
+        }
+        else if (user.getFirst_name().isBlank()) {
             if (principal.getGivenName() != null) {
                 String firstName = principal.getAttributes().get("given_name").toString();
                 user.setFirst_name(firstName);
@@ -137,7 +144,7 @@ public class SignUpController {
                 return new RedirectView("/sign_up");
             }
         }
-        else {
+        else if (user.getSurname().isBlank()){
             if (principal.getFamilyName() != null) {
                 String surname = principal.getAttributes().get("family_name").toString();
                 user.setSurname(surname);
@@ -145,6 +152,27 @@ public class SignUpController {
                 session.setAttribute("noSurname", true);
                 return new RedirectView("/sign_up");
             }
+        }
+
+        Path uploadDir = Paths.get("images");
+        Files.createDirectories(uploadDir);
+
+        if (!image.isEmpty()) {
+            String filename = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+
+            
+
+            Path filePath = uploadDir.resolve(filename);
+            Files.copy(
+                    image.getInputStream(),
+                    filePath,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+            user.setProfilePicture(filename);
+        }
+        else {
+            user.setProfilePicture("defaultProfileAvatar.jpeg");
+
         }
 
         user.setEmailAddress(principal.getEmail());
