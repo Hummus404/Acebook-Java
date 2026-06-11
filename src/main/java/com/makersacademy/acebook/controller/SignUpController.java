@@ -1,10 +1,10 @@
 package com.makersacademy.acebook.controller;
 
+import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -35,11 +35,19 @@ public class SignUpController {
         ModelAndView signUp = new ModelAndView("/sign-up");
 
         String emailAddress = principal.getAttributes().get("email").toString();
-        System.out.println(emailAddress);
+
+        Optional<User> uniqueUser = userRepository.findUserByEmailAddress(emailAddress);
+
+        if (uniqueUser.isPresent()){
+            ModelAndView model = new ModelAndView("posts/index");
+            Iterable<Post> posts = repository.findAll();
+            model.addObject("posts", posts);
+            model.addObject("post", new Post());
+            return model;
+        }
 
         if (principal.getGivenName() != null) {
             String firstName = principal.getAttributes().get("given_name").toString();
-            System.out.println(firstName);
             signUp.addObject("firstName", firstName);
         }
         else{
@@ -73,6 +81,11 @@ public class SignUpController {
             session.setAttribute("noSurname", null);
         }
 
+        if (session.getAttribute("bothNamesBlank") != null){
+            signUp.addObject("bothNamesBlank", true);
+            session.setAttribute("bothNamesBlank", null);
+        }
+
         if (session.getAttribute("uniqueUserBool") != null){
             signUp.addObject("uniqueUserBool", true);
             signUp.addObject("chosenUsername", session.getAttribute("chosenUsername"));
@@ -103,7 +116,18 @@ public class SignUpController {
             return new RedirectView("/sign_up");
         }
 
-        if (user.getFirst_name().isBlank()){
+        if (user.getFirst_name().isBlank() && user.getSurname().isBlank()) {
+            if (principal.getGivenName() != null) {
+                String firstName = principal.getAttributes().get("given_name").toString();
+                String surname = principal.getAttributes().get("family_name").toString();
+                user.setFirst_name(firstName);
+                user.setSurname(surname);
+            }
+            else {
+                session.setAttribute("bothNamesBlank", true);
+                return new RedirectView("/sign_up");
+            }
+        } else if (user.getFirst_name().isBlank()) {
             if (principal.getGivenName() != null) {
                 String firstName = principal.getAttributes().get("given_name").toString();
                 user.setFirst_name(firstName);
@@ -112,10 +136,8 @@ public class SignUpController {
                 session.setAttribute("noFirstName", true);
                 return new RedirectView("/sign_up");
             }
-
         }
-
-        if (user.getSurname().isBlank()) {
+        else {
             if (principal.getFamilyName() != null) {
                 String surname = principal.getAttributes().get("family_name").toString();
                 user.setSurname(surname);

@@ -12,6 +12,7 @@
     <span th:if="${uniqueUserBool}" th:text="'Username ' + ${chosenUsername} + ' has been taken'"></span>
     <span th:if="${noFirstName}">First name cannot be blank</span>
     <span th:if="${noSurname}">Surname cannot be blank</span>
+    <span th:if="${bothNamesBlank}">Both names must be provided</span>
     <form th:action="@{/sign_up/new}" th:object="${sign_up}" method="post" enctype="multipart/form-data">
         <label th:for="username">Username:</label>
         <input type="text" placeholder="Choose a username" th:field="*{username}"/> <br>
