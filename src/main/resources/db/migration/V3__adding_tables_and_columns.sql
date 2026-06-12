@@ -39,5 +39,5 @@ enabled boolean NOT NULL
 );
 
 INSERT INTO users (username, profile_picture, first_name, surname, email_address, friends, blocked, enabled) VALUES
-('adrian_woz_here', 'alt_text', 'Adrian', 'Swaine', 'adrianjswaine@gmail.com','2,3','', TRUE),
-('adrian_woz_not_here', 'alt_text', 'NotAdrian', 'NotSwaine', 'notadrianjswaine@gmail.com','1','3', TRUE);
+('adrian_woz_here', 'alt_text', 'Adrian', 'Swaine', 'test1234@email.com','2,3','', TRUE),
+('adrian_woz_not_here', 'alt_text', 'NotAdrian', 'NotSwaine', 'nottest1234@email.com','1','3', TRUE);
