@@ -206,3 +206,36 @@ nav ul li a:hover {
     border: 2px solid var(--border);
     border-radius: 4px;
 }
+
+/* Post composer preview */
+
+/* Timeline preview */
+
+.timeline-divider {
+    width: 100%;
+    margin: 34px 0 24px;
+    border: 0;
+    border-top: 1px solid var(--secondary);
+}
+
+.timeline-section h1 {
+    margin: 0 auto 24px;
+    padding: 10px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    background: var(--background);
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+.post-list {
+    display: grid;
+    gap: 24px;
+    list-style: none;
+}
+
+.post-card {
+    padding: 20px;
+}
+
+.
