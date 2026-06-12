@@ -43,7 +43,7 @@ public class FriendshipController {
                 .isPresent();
         if (!alreadyExists) {
             Friendship friendship = new Friendship();
-            friendship.setRequester(requestor);
+            friendship.setRequestor(requestor);
             friendship.setAddressee(addressee);
             friendship.setStatus(FriendshipStatus.PENDING);
             friendship.setCreatedAt(LocalDateTime.now());
@@ -85,7 +85,7 @@ public class FriendshipController {
 
         List<User> friends = new ArrayList<>();
         sent.forEach(friendship -> friends.add(friendship.getAddressee()));
-        received.forEach(friendship -> friends.add(friendship.getRequester()));
+        received.forEach(friendship -> friends.add(friendship.getRequestor()));
 
         model.addAttribute("friends", friends);
         return "friends/list";
