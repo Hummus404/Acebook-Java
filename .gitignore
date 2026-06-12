@@ -12,4 +12,5 @@ dependency-reduced-pom.xml
 **/.DS_Store
 application.yml
 
-/images
+images/*
+
