@@ -24,6 +24,7 @@ public class PostWithImageTest {
 
     WebDriver driver;
     Faker faker;
+    WebDriverWait wait;
 
     @BeforeEach
     public void setup() {
@@ -31,7 +32,7 @@ public class PostWithImageTest {
         driver = new ChromeDriver();
         faker = new Faker();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         driver.get("http://localhost:8081/");
         wait.until(driver -> driver.findElement(By.name("username")));
@@ -51,9 +52,7 @@ public class PostWithImageTest {
     @Test
     public void successfulImageUpload() {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         int before = wait.until(driver -> driver.findElements(By.cssSelector("li img")).size());
-
 
         Path imagePath = Paths.get(
                 System.getProperty("user.dir"),
@@ -116,7 +115,6 @@ public class PostWithImageTest {
     @Test
     public void emptyPostIsNotSubmitted() {
         System.out.println(System.getProperty("user.dir"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement submitBtn = wait.until(
                 ExpectedConditions.elementToBeClickable(By.className("submit-btn"))
         );
