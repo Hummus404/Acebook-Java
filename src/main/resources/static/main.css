@@ -1,3 +1,14 @@
+:root {
+    --background: #ffffff;
+    --headline: #094067;
+    --paragraph: #5f6c7b;
+    --button: #3da0fc;
+    --secondary: #90b4ce;
+    --tertiary: #ef4565;
+    --soft-blue: #eef7fd;
+    --border: #094067;
+
+}
 
 * {
     margin: 0;
