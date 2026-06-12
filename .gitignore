@@ -13,4 +13,4 @@ dependency-reduced-pom.xml
 application.yml
 
 images/*
-
+!images/.gitkeep
