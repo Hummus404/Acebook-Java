@@ -1,5 +1,6 @@
 package com.makersacademy.acebook.controller;
 
+import com.makersacademy.acebook.DTOs.DTOPostUserJoin;
 import com.makersacademy.acebook.model.Like;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.PostView;
@@ -28,7 +29,7 @@ import java.util.List;
 public class PostsController {
 
     @Autowired
-    PostRepository repository;
+    PostRepository postRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -47,7 +48,7 @@ public class PostsController {
     public String index(Model model) {
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
-        for (Post post : repository.findAll()) {
+        for (DTOPostUserJoin post : postRepository.postsJoin()) {
             long count = likeRepository.countByPostId(post.getId());
             boolean liked = me != null &&
                     likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
@@ -55,8 +56,16 @@ public class PostsController {
         }
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
-        Iterable<Post> posts = repository.findAll();
+        Iterable<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
+
+
+        Iterable<DTOPostUserJoin> gerald_test = postRepository.postsJoin();
+
+        for(DTOPostUserJoin post : gerald_test){
+            System.out.println(post.getContent());
+        }
+
         return "posts/index";
     }
 
@@ -79,7 +88,7 @@ public class PostsController {
             post.setImage(filename);
         }
 
-        repository.save(post);
+        postRepository.save(post);
 
         return new RedirectView("/posts");
 
@@ -88,18 +97,15 @@ public class PostsController {
 
     @PostMapping("/posts")
     public RedirectView create(@ModelAttribute Post post) {
-        repository.save(post);
+        postRepository.save(post);
         return new RedirectView("/posts");
     }
 
     @PostMapping("/posts/{id}/like")
     public RedirectView like(@PathVariable Long id) {
-        System.out.println("Hello K");
         User me = currentUser();
-        System.out.println("Hello A");
 
         if (me != null) {
-            System.out.println("Hello B");
 
             likeRepository.findByPostIdAndUserId(id, me.getId()).ifPresentOrElse(
                     likeRepository::delete,
@@ -108,7 +114,6 @@ public class PostsController {
                     // not yet -> like
             );
         }
-        System.out.println("Hello C");
 
         return new RedirectView("/posts");
     }

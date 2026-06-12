@@ -27,12 +27,16 @@
     <li th:each="pv : ${postViews}">
         <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}"
              th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
+        <p th:text = "${pv.post.first_name} + ' ' + ${pv.post.surname}"></p>
+        <img th:src="@{'/images/' + ${pv.post.profile_picture}}" width="50"/>
+        <p th:text = "${pv.post.date_of_post}"></p>
         <p th:text="${pv.post.content}"></p>
         <span class="like-count" th:text="${pv.likeCount}"></span> likes
         <form th:action="@{/posts/{id}/like(id=${pv.post.id})}"
               method="post" style="display:inline">
             <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
         </form>
+        <p>COMMENT</p>
     </li>
 </ul>
 
