@@ -69,6 +69,8 @@ public class PostWithImageTest {
                 .sendKeys(imagePath.toString());
 
         driver.findElement(By.className("submit-btn")).click();
+
+        wait.until(driver -> driver.findElements(By.cssSelector("li img")));
         int after = driver.findElements(By.cssSelector("li img")).size();
         assertTrue(after > before);
 
@@ -82,7 +84,7 @@ public class PostWithImageTest {
         driver.findElement(By.className("input-content-field")).sendKeys(dummyInputText);
         driver.findElement(By.className("submit-btn")).click();
         wait.until(driver -> driver.findElement(By.className("input-content-field")));
-//        wait.until(driver -> driver.findElement(By.tagName("body")));
+        wait.until(driver -> driver.findElement(By.tagName("body")));
         String pageText = driver.findElement(By.tagName("body")).getText();
         assertTrue(pageText.contains(dummyInputText));
 
