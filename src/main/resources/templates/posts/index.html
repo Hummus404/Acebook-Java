@@ -1,46 +1,56 @@
 <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org"
-          xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
-    <head lang="en">
-        <meta charset="UTF-8"/>
-        <title>Acebook</title>
-        <link rel="stylesheet" href="/main.css" />
-    </head>
-    <body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>Acebook</title>
+    <link rel="stylesheet" href="/main.css" />
+</head>
+<body>
 
-    <h1>Posts</h1>
+<h1>Posts</h1>
+  
+   <div th:replace="~{posts/base :: header}"></div>
 
-    <div sec:authorize="isAuthenticated()" id="greeting">
-        Signed in as <span sec:authentication="principal.attributes['email']"></span>
-    </div>
 
-    <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
-        <p>Content: <input type="text" th:field="*{content}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+<div sec:authorize="isAuthenticated()" id="greeting">
+    Signed in as <span sec:authentication="principal.attributes['email']"></span>
+    <form th:action="@{/logout}" method="post" style="display:inline">
+        <button type="submit">Sign out</button>
     </form>
-    <ul>
-        <li th:each="pv : ${postViews}">
-            <span th:text="${pv.post.content}"></span>
-            &mdash; <span class="like-count"
-            th:text="${pv.likeCount}"></span> likes
-            <form th:action="@{/posts/{id}/like(id=${pv.post.id})}"
-                  method="post" style="display:inline">
-                <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
-            </form>
-        </li>
-    </ul>
+</div>
 
-    <ul>
-        <li th:each="post: ${posts}">
-            <span th:text="${post.content}"></span>
-            <form th:action="@{/posts/{id}/like(id=${post.id})}"
-                  method="post" style="display:inline">
-                <button type="submit">Like</button>
-            </form>
-        </li>
-    </ul>
+<form id="post-form" action="#" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
+    <p>Content: <input class="input-content-field" type="text" th:field="*{content}" /></p>
+    <p><input class="input-image" type="file" name="imageFile"></p>
+    <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
 
+<ul>
+    <li th:each="pv : ${postViews}">
+        <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}"
+             th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
+        <p th:text="${pv.post.content}"></p>
+        <span class="like-count" th:text="${pv.likeCount}"></span> likes
+        <form th:action="@{/posts/{id}/like(id=${pv.post.id})}"
+              method="post" style="display:inline">
+            <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
+        </form>
+    </li>
+</ul>
 
+<script>
+    const contentInput = document.querySelector(".input-content-field")
+    const imageInput = document.querySelector(".input-image")
+    const postForm = document.querySelector("#post-form")
 
-    </body>
+    postForm.addEventListener("submit", (e) => {
+        if (contentInput.value.trim().length === 0 && imageInput.files.length === 0) {
+            e.preventDefault()
+            alert("Both image and content fields cannot be empty")
+        }
+    })
+</script>
+
+</body>
 </html>
