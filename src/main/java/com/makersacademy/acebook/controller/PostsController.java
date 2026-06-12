@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import java.time.LocalDateTime;
+
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class PostsController {
 
     @GetMapping("/posts")
     public String index(Model model) {
-        Iterable<Post> posts = repository.findAll();
+        Iterable<Post> posts = repository.findAllByOrderByDateOfPostDesc();
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         return "posts/index";
@@ -26,6 +28,7 @@ public class PostsController {
 
     @PostMapping("/posts")
     public RedirectView create(@ModelAttribute Post post) {
+        post.setDateOfPost(LocalDateTime.now());
         repository.save(post);
         return new RedirectView("/posts");
     }
