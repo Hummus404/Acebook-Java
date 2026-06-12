@@ -16,6 +16,7 @@ public class Post {
     private Long id;
     private String content;
     private LocalDateTime dateOfPost;
+    private String image;
 
     public Post() {}
 

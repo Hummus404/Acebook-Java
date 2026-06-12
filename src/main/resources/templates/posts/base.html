@@ -15,7 +15,7 @@
 				<a th:href="@{/posts}"><img th:src="@{/images/acebook_logo.png}" alt="logo" class="logo"></a>
 				<ul>
 					<li><a th:href="@{/posts}">Home</a></li>
-					<li><a th:href="@{#}">Friends</a></li>
+					<li><a th:href="@{/friends}">Friends</a></li>
 				</ul>
 
 				<div class="user-menu">
@@ -24,8 +24,8 @@
 					<div class="sub-menu-wrap" id="subMenu">
 						<div class="sub-menu">
 							<div class="user-info">
-								<img th:src="@{/images/user_img.jpg}" alt="user-img" class="user-img">
-								<h3>Hira Mir</h3>
+								<a th:href="@{#}"><img th:src="@{/images/user_img.jpg}" alt="user-img" class="user-img"></a>
+								<h3> <a th:href="@{#}">Hira Mir</a></h3>
 							</div>
 							<hr>
 
