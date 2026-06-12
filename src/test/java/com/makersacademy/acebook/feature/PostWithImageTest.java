@@ -51,9 +51,7 @@ public class PostWithImageTest {
                 ExpectedConditions.elementToBeClickable(By.name("action"))
         ).click();
 
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("greeting"))
-        );
+        wait.until(ExpectedConditions.urlContains("/posts"));
 
     }
 
