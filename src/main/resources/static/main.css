@@ -18,7 +18,11 @@
 }
 
 body {
-    background: #d8d8e0;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--paragraph);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
 }
 
 nav + * {
@@ -34,7 +38,7 @@ nav + * {
 /* Navigation bar */
 
 nav {
-    background: #1a1a1a;
+    background: #1a1a1a; 
     width: 100%;
     padding: 15px 60px;
     display: flex;
@@ -170,4 +174,35 @@ nav ul li a:hover {
 
 .sub-menu-link:hover p {
     font-weight: 600;
+}
+
+/* Shared Page Structure */
+
+.page-shell {
+    width: min(100% - 32px, 1040px);
+    margin: 0 auto;
+    padding: 36px 0 64px;
+}
+
+.feed-page {
+    max-width: 940px;
+}
+
+.section-label,
+.timeline-section h1 {
+    color: var(--headline);
+    font-weight: 700;
+}
+
+.section-label {
+    background: var(--headline);
+    text-align: center;
+    font-size: 1.15rem;
+}
+
+.composer-panel,
+.post-card {
+    background: var(--background);
+    border: 2px solid var(--border);
+    border-radius: 4px;
 }
