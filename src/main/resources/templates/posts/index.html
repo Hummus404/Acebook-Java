@@ -3,12 +3,17 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head lang="en">
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Acebook</title>
     <link rel="stylesheet" href="/main.css" />
 </head>
 <body>
 
 <h1>Posts</h1>
+  
+   <div th:replace="~{posts/base :: header}"></div>
+
 
 <div sec:authorize="isAuthenticated()" id="greeting">
     Signed in as <span sec:authentication="principal.attributes['email']"></span>
