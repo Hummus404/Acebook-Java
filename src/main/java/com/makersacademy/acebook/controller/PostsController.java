@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
+import java.time.LocalDateTime;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,6 +47,7 @@ public class PostsController {
 
     @GetMapping("/posts")
     public String index(Model model) {
+        Iterable<Post> posts = repository.findAllByOrderByDateOfPostDesc();
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
         for (Post post : repository.findAll()) {
@@ -88,6 +91,7 @@ public class PostsController {
 
     @PostMapping("/posts")
     public RedirectView create(@ModelAttribute Post post) {
+        post.setDateOfPost(LocalDateTime.now());
         repository.save(post);
         return new RedirectView("/posts");
     }
