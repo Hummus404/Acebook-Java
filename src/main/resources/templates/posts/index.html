@@ -3,17 +3,19 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head lang="en">
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Acebook</title>
-    <link rel="stylesheet" href="/main.css" />
+    <link rel="stylesheet" href="/main.css"/>
 </head>
 <body>
 
-<h1>Posts</h1>
-  
-   <div th:replace="~{posts/base :: header}"></div>
+<div th:replace="~{posts/base :: header}"></div>
+<main class="page-shell feed-page">
+    <h1>Posts</h1>
 
 
-<div sec:authorize="isAuthenticated()" id="greeting">
+    <div sec:authorize="isAuthenticated()" id="greeting">
     Signed in as <span sec:authentication="principal.attributes['email']"></span>
     <form th:action="@{/logout}" method="post" style="display:inline">
         <button type="submit">Sign out</button>
@@ -26,18 +28,26 @@
     <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 
-<ul>
-    <li th:each="pv : ${postViews}">
-        <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}"
-             th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
-        <p th:text="${pv.post.content}"></p>
-        <span class="like-count" th:text="${pv.likeCount}"></span> likes
-        <form th:action="@{/posts/{id}/like(id=${pv.post.id})}"
-              method="post" style="display:inline">
-            <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
-        </form>
-    </li>
-</ul>
+    <h2 class="timeline-heading">Timeline</h2>
+
+
+    <ul class="timeline-list">
+        <li th:each="pv : ${postViews}" class="post-card">
+            <div class="post-header">
+                <div class="post-avatar" aria-hidden="true">A</div>
+                <!-- username -->
+            </div>
+            <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}" th:src="@{'/images/' + ${pv.post.image}}"/>
+            <div class="post-content"><p th:text="${pv.post.content}"></p></div>
+            <div class="post-actions">
+                <span class="like-count" th:text="${pv.likeCount}"></span> likes
+                <form th:action="@{/posts/{id}/like(id=${pv.post.id})}" method="post">
+                    <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</main>
 
 <script>
     const contentInput = document.querySelector(".input-content-field")
