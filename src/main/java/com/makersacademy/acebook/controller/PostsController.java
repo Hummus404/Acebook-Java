@@ -117,4 +117,17 @@ public class PostsController {
 
         return new RedirectView("/posts");
     }
+
+    @GetMapping("/posts/most-liked")
+    public String mostLiked (Model model) {
+        User me = currentUser();
+        List<PostView> postViews = new ArrayList<>();
+        for (Post post: repository.findAll()) {
+            long likeCount = likeRepository.countByPostId(post.getId());
+
+
+        }
+
+    }
+
 }
