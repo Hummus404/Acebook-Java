@@ -1,0 +1,20 @@
+target/classes/
+target/test-classes/
+target/generated-*
+target/maven-*
+target/surefire-reports/
+*.jar.original
+.git/
+.gitignore
+.idea/
+.vscode/
+*.iml
+
+# logs
+*.log
+
+# OS files
+.DS_Store
+
+# test output
+surefire-reports/

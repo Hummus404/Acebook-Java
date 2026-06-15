@@ -49,6 +49,7 @@ public class PostWithImageTest {
         driver.findElement(By.name("action")).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         //int before = driver.findElements(By.cssSelector("li img")).size();
+
         int before = wait.until(driver -> driver.findElements(By.cssSelector("li img")).size());
 
 
