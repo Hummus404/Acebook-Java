@@ -8,6 +8,7 @@ import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.LikeRepository;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -45,7 +46,7 @@ public class PostsController {
     }
 
     @GetMapping("/posts")
-    public String index(Model model) {
+    public String index(Model model, HttpSession session) {
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
         for (DTOPostUserJoin post : postRepository.postsJoin()) {
@@ -59,18 +60,13 @@ public class PostsController {
         Iterable<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
 
-
-        Iterable<DTOPostUserJoin> gerald_test = postRepository.postsJoin();
-
-        for(DTOPostUserJoin post : gerald_test){
-            System.out.println(post.getContent());
-        }
+        session.setAttribute("userID", me.getId());
 
         return "posts/index";
     }
 
     @PostMapping("/posts/new")
-    public RedirectView create(@ModelAttribute Post post, @RequestParam("imageFile") MultipartFile image) throws IOException {
+    public RedirectView create(@ModelAttribute Post post, @RequestParam("imageFile") MultipartFile image, HttpSession session) throws IOException {
 
         // Could implement a try catch block at a later point
 
@@ -88,6 +84,8 @@ public class PostsController {
             post.setImage(filename);
         }
 
+        post.setPoster((int) (long) session.getAttribute("userID"));
+        System.out.println(session.getAttribute("userID"));
         postRepository.save(post);
 
         return new RedirectView("/posts");
