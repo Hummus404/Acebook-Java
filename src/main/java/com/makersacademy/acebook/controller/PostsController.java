@@ -62,6 +62,7 @@ public class PostsController {
         model.addAttribute("post", new Post());
         model.addAttribute("posts", posts);
         session.setAttribute("userID", me.getId());
+
         return "posts/index";
     }
 

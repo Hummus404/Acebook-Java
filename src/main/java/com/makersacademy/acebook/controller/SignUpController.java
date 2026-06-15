@@ -160,11 +160,6 @@ public class SignUpController {
         Files.createDirectories(uploadDir);
 
 
-        System.out.println(image.getSize());
-
-
-
-
         if (!image.isEmpty()) {
 
 
@@ -200,6 +195,10 @@ public class SignUpController {
 
         userRepository.save(user);
 
+        Optional<User> newUser = userRepository.findUserByEmailAddress(user.getEmailAddress());
+
+
+        session.setAttribute("profilePicture", newUser.get().getProfilePicture());
         return new RedirectView("/posts");
     }
 

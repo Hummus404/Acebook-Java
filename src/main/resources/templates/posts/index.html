@@ -22,6 +22,8 @@
     </form>
 </div>
 
+
+
 <form id="post-form" action="#" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
     <p>Content: <input class="input-content-field" type="text" th:field="*{content}" /></p>
     <p><input class="input-image" type="file" name="imageFile"></p>
@@ -34,7 +36,8 @@
     <ul class="timeline-list">
         <li th:each="pv : ${postViews}" class="post-card">
             <div class="post-header">
-                <div class="post-avatar" aria-hidden="true"><img th:src="@{'/images/' + ${pv.post.profile_picture}}" width="50"/></div>
+                <div><img th:src="@{'/images/' + ${pv.post.profile_picture}}" class = "logo"/></div>
+<!--                <img th:src="@{'/images/' + ${pv.post.profile_picture}}" class="logo"/>-->
 
                 <!-- username -->
                 <p th:text = "${pv.post.first_name} + ' ' + ${pv.post.surname} + ' - ' + ${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p>
