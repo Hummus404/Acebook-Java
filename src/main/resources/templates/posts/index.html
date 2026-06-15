@@ -37,7 +37,7 @@
                 <div class="post-avatar" aria-hidden="true">A</div>
                 <!-- username -->
             </div>
-            <img th:if="..." th:src="..."/>
+            <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}" th:src="@{'/images/' + ${pv.post.image}}"/>
             <div class="post-content"><p th:text="${pv.post.content}"></p></div>
             <div class="post-actions">
                 <span class="like-count" th:text="${pv.likeCount}"></span> likes
