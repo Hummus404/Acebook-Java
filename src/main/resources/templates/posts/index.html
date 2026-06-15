@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/main.css" />
 </head>
 <body>
-
+<main class="page-shell feed-page">
 <h1>Posts</h1>
   
    <div th:replace="~{posts/base :: header}"></div>
@@ -34,14 +34,14 @@
     <ul class="timeline-list">
         <li th:each="pv : ${postViews}" class="post-card">
             <div class="post-header">
-                <div class="post-avatar" aria-hidden="true">A</div>
-                <img th:src="@{'/images/' + ${pv.post.profile_picture}}" width="50"/>
+                <div class="post-avatar" aria-hidden="true"><img th:src="@{'/images/' + ${pv.post.profile_picture}}" width="50"/></div>
+
                 <!-- username -->
-                <p th:text = "${pv.post.first_name} + ' ' + ${pv.post.surname}"></p>
+                <p th:text = "${pv.post.first_name} + ' ' + ${pv.post.surname} + ' - ' + ${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p>
             </div>
 
             <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}" th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
-            <p th:text = "${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')"></p>
+<!--            <p th:text = "${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p>-->
             <div class="post-content"><p th:text="${pv.post.content}"></p></div>
             <div class="post-actions">
                 <span class="like-count" th:text="${pv.likeCount}"></span> likes

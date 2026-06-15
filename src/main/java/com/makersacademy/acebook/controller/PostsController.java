@@ -65,6 +65,7 @@ public class PostsController {
         return "posts/index";
     }
 
+
     @PostMapping("/posts/new")
     public RedirectView create(@ModelAttribute Post post, @RequestParam("imageFile") MultipartFile image, HttpSession session) throws IOException {
 
