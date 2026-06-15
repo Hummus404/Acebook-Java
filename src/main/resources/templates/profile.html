@@ -13,6 +13,7 @@
 
     <section>
         <div th:each="post : ${posts}">
+            <img th:src="${post.image}" alt="">
             <p th:text="${post.content}"></p>
         </div>
     </section>

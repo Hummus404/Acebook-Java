@@ -32,14 +32,15 @@ public class ProfileController {
         String emailAddress = (String) principal.getAttributes().get("email");
 
         User user = userRepository.findUserByEmailAddress(emailAddress).orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println("USER IS: ");
-        System.out.println(user);
         model.addAttribute("user", user);
         model.addAttribute("userName", user.getUsername());
 
         List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId().intValue());
 
         model.addAttribute("posts", posts);
+        System.out.println("POST COUNT: " + posts.size());
+        posts.forEach(p -> System.out.println(p.getPoster()));
+        System.out.println("USER ID: " + user.getId());
 
         return "profile";
     }
