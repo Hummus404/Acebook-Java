@@ -57,7 +57,7 @@ public class FriendshipController {
         Friendship friendship = friendshipRepository.findById(friendshipId).orElseThrow();
         friendship.setStatus(FriendshipStatus.ACCEPTED);
         friendshipRepository.save(friendship);
-        return "redirect:/users/requests";
+        return "redirect:/friends";
     }
 
     @PostMapping("/decline/{friendshipId}")
@@ -65,21 +65,28 @@ public class FriendshipController {
         Friendship f = friendshipRepository.findById(friendshipId).orElseThrow();
         f.setStatus(FriendshipStatus.DECLINED);
         friendshipRepository.save(f);
-        return "redirect:/friends/requests";
+        return "redirect:/friends";
     }
 
-    @GetMapping("/requests")
-    public String viewRequests(Model model) {
-        User me = currentUser();
-        model.addAttribute("pendingRequests",
-                friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.PENDING));
-        return "friends/requests";
-    }
+//    @GetMapping("/requests")
+//    public String viewRequests(Model model) {
+//        User me = currentUser();
+//        model.addAttribute("pendingRequests",
+//                friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.PENDING));
+//        return "friends/requests";
+//    }
 
     @GetMapping
     public String viewFriends(Model model) {
         User me = currentUser();
 
+        // 1. Incoming requests: Sent to me, waiting for my response
+        List<Friendship> incomingRequests = friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.PENDING);
+
+        // 2. Outgoing requests: Sent by me, waiting for their response
+        List<Friendship> sentRequests = friendshipRepository.findByRequestorAndStatus(me, FriendshipStatus.PENDING);
+
+        // 3. Accepted friends
         List<Friendship> sent = friendshipRepository.findByRequestorAndStatus(me, FriendshipStatus.ACCEPTED);
         List<Friendship> received = friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.ACCEPTED);
 
@@ -87,7 +94,9 @@ public class FriendshipController {
         sent.forEach(friendship -> friends.add(friendship.getAddressee()));
         received.forEach(friendship -> friends.add(friendship.getRequestor()));
 
+        model.addAttribute("incomingRequests", incomingRequests);
+        model.addAttribute("sentRequests", sentRequests);
         model.addAttribute("friends", friends);
-        return "friends/list";
+        return "friends/list_requests";
     }
 }
