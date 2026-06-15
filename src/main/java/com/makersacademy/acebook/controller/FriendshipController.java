@@ -39,11 +39,11 @@ public class FriendshipController {
         User requestor = currentUser();
         User addressee = userRepository.findById(addresseeId).orElseThrow();
         boolean alreadyExists = friendshipRepository
-                .findByRequestorAndAddressee(requestor, addressee)
+                .findByRequesterAndAddressee(requestor, addressee)
                 .isPresent();
         if (!alreadyExists) {
             Friendship friendship = new Friendship();
-            friendship.setRequestor(requestor);
+            friendship.setRequester(requestor);
             friendship.setAddressee(addressee);
             friendship.setStatus(FriendshipStatus.PENDING);
             friendship.setCreatedAt(LocalDateTime.now());
@@ -84,15 +84,15 @@ public class FriendshipController {
         List<Friendship> incomingRequests = friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.PENDING);
 
         // 2. Outgoing requests: Sent by me, waiting for their response
-        List<Friendship> sentRequests = friendshipRepository.findByRequestorAndStatus(me, FriendshipStatus.PENDING);
+        List<Friendship> sentRequests = friendshipRepository.findByRequesterAndStatus(me, FriendshipStatus.PENDING);
 
         // 3. Accepted friends
-        List<Friendship> sent = friendshipRepository.findByRequestorAndStatus(me, FriendshipStatus.ACCEPTED);
+        List<Friendship> sent = friendshipRepository.findByRequesterAndStatus(me, FriendshipStatus.ACCEPTED);
         List<Friendship> received = friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.ACCEPTED);
 
         List<User> friends = new ArrayList<>();
         sent.forEach(friendship -> friends.add(friendship.getAddressee()));
-        received.forEach(friendship -> friends.add(friendship.getRequestor()));
+        received.forEach(friendship -> friends.add(friendship.getRequester()));
 
         model.addAttribute("incomingRequests", incomingRequests);
         model.addAttribute("sentRequests", sentRequests);
