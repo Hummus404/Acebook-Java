@@ -34,10 +34,10 @@
 
         <ul class="timeline-list">
     <li th:each="pv : ${postViews}" class="post-card">
-        <div class="post_avatar" aria-hidden="true">A</div>
+        <div class="post-avatar" aria-hidden="true">A</div>
         <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}"
              th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
-        <p th:text="${pv.post.content}"></p>
+        <div class="post-content"><p th:text="${pv.post.content}"></p></div>
         <span class="like-count" th:text="${pv.likeCount}"></span> likes
         <form th:action="@{/posts/{id}/like(id=${pv.post.id})}"
               method="post" style="display:inline">
