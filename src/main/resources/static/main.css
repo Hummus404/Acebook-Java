@@ -167,6 +167,21 @@ nav ul li a:hover {
 }
 
 /* Shared preview layout */
+
+/* Avatar: a circular img OR a text initial. */
+.avatar, .post-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    object-fit: cover; overflow: hidden;      /* new: holds a real photo */
+    display: grid; place-items: center;        /* centres an initial */
+    background: var(--acebook-secondary);
+    color: var(--acebook-headline);
+    font-weight: 800;
+}
+
+.avatar--sm { width: 32px; height: 32px; font-size: 14px; }   /* comments */
+.avatar--lg { width: 80px; height: 80px; font-size: 28px; }   /* profile */
+
 .feed-page {
     max-width: 760px;
     margin: 0 auto;
