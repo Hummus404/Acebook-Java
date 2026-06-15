@@ -9,10 +9,6 @@ body {
     background: #d8d8e0;
 }
 
-nav + * {
-    padding: 60px 60px;
-}
-
 .hero {
     width: 100%;
     min-height: 100vh;
@@ -218,7 +214,6 @@ nav ul li a:hover {
 }
 
 .submit-btn,
-.like-btn,
 .post-card button {
     border: 0;
     border-radius: 6px;
@@ -255,10 +250,16 @@ input[type="reset"],
 
 /* Post cards */
 .post-card {
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    gap: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     padding: 16px;
+}
+
+.post-header {
+    display: flex,
+    align-items: center;
+    gap: 12px;
 }
 
 .post-avatar {
@@ -281,7 +282,7 @@ input[type="reset"],
 .post-card img {
     display: block;
     width: 100%;
-    max-width: 420px;
+    max-width: 100%;
     height: auto;
     border: 2px solid var(--acebook-secondary);
     border-radius: 6px;
@@ -321,7 +322,4 @@ input[type="reset"],
         padding: 24px 14px 48px;
     }
 
-    .post-card {
-        grid-template-columns: 1fr;
-    }
 }
