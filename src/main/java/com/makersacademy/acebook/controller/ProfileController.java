@@ -37,7 +37,7 @@ public class ProfileController {
         model.addAttribute("user", user);
         model.addAttribute("userName", user.getUsername());
 
-        List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId());
+        List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId().intValue());
 
         model.addAttribute("posts", posts);
 
