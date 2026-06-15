@@ -35,6 +35,9 @@ public class PostsController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    LikeRepository likeRepository;
+
     private User currentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof DefaultOidcUser oidc)) return null;
