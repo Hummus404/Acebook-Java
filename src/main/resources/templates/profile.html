@@ -6,7 +6,15 @@
 </head>
 <body>
     <h1>Profile</h1>
-    <img th:src="${user.profilePicture}" alt="">
-    <p th:text="${user.username}"></p>
+    <section>
+        <img th:src="${user.profilePicture}" alt="">
+        <p th:text="${user.username}"></p>
+    </section>
+
+    <section>
+        <div th:each="post: ${posts}">
+            <p th:text="${post.content}"></p>
+        </div>
+    </section>
 </body>
 </html>
