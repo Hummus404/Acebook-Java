@@ -63,6 +63,15 @@ nav ul li {
 nav ul li a {
     color: #fff;
     text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #fff;
+    background-color: #000;
+    padding: 8px 24px;
 }
 
 .user-menu {
@@ -95,7 +104,9 @@ nav ul li a {
     margin-left: 0;
 }
 
-.user-info h3 {
+.user-info h3 a {
+    text-decoration: none;
+    color: #525252;
     font-weight: 500;
     font-size: 16px;
 }
