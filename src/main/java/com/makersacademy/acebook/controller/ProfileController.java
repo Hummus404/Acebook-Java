@@ -60,10 +60,10 @@ public class ProfileController {
         return "profile";
     }
 
-    @GetMapping("/users/{id}")
-    public String showUserProfile(@PathVariable Long id, Model model) {
+    @GetMapping("/profile/{username}")
+    public String showUserProfile(@PathVariable String username, Model model) {
         User me = currentUser();
-        User profileUser = userRepository.findById(id).orElseThrow();
+        User profileUser = userRepository.findUserByUsername(username).orElseThrow();
 
         model.addAttribute("profileUser", profileUser);
 

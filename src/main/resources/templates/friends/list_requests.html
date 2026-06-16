@@ -38,7 +38,7 @@
             <li th:each="friend : ${friends}">
                 <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
                 <span th:text="${friend.username}"></span>
-                <a th:href="@{/users/{id}(id=${friend.id})}">View Profile</a>
+                <a th:href="@{/profile/{username}(username=${friend.username})}">View Profile</a>
             </li>
         </ul>
 
