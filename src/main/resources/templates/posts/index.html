@@ -25,7 +25,7 @@
 
 
 <form id="post-form" action="#" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
-    <p>Content: <input class="input-content-field" type="text" th:field="*{content}" /></p>
+    <p>Content: <input class="input-content-field" type="text" th:field="*{content}" placeholder="What be on your mind? yarrrr...." /></p>
     <p><input class="input-image" type="file" name="imageFile"></p>
     <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
@@ -53,15 +53,28 @@
                 </form>
             </div>
 
-            <div th:each = "comment : ${commentRepository.findAllByPost({pv.post.id})}">
+            <div th:each = "comment : ${commentRepository.commentsJoin({pv.post.id})}">
 
-                <p th:text = "${comment.getContent()}"></p>
+                <div class = "post-card">
+                    <div class = "post-header">
+
+                        <div><img th:src="@{'/images/' + ${comment.profile_picture}}" class = "logo"/></div>
+                        <p th:text = "${comment.first_name} + ' ' + ${comment.surname} + ' - ' + ${#dates.format(comment.date_of_comment, 'dd-MM-yyyy HH:MM')}"></p>
+
+
+                    </div>
+                    <p th:text = "${comment.getContent()}"></p>
+
+                </div>
+
+
+
             </div>
 
             <div>
 
                 <form id="comment-form" action="#" th:action="@{/comment/new}" th:object="${comment}" method="post">
-                    <p>Comment: <input class="input-content-field" type="text" th:field="*{content}" /></p>
+                    <p>Comment: <input class="input-content-field" type="text" th:field="*{content}" placeholder = "Leave a comment" /></p>
                     <input type="hidden" name = "post" th:value = "${pv.post.id}" />
                     <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
                 </form>

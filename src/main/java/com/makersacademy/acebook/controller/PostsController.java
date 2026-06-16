@@ -1,5 +1,6 @@
 package com.makersacademy.acebook.controller;
 
+import com.makersacademy.acebook.DTOs.DTOCommentUserJoin;
 import com.makersacademy.acebook.DTOs.DTOPostUserJoin;
 import com.makersacademy.acebook.model.*;
 import com.makersacademy.acebook.repository.CommentRepository;
@@ -65,6 +66,10 @@ public class PostsController {
         model.addAttribute("posts", posts);
         model.addAttribute("comment", comment);
         model.addAttribute("commentRepository", commentRepository);
+
+//        Iterable<DTOCommentUserJoin>  commentUserJoin = commentRepository.commentsJoin();
+
+//        model.addAttribute("commentUserJoin", commentUserJoin);
 
         session.setAttribute("userID", me.getId());
 

@@ -2,20 +2,21 @@ package com.makersacademy.acebook.DTOs;
 
 import lombok.Getter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
-public class DTOcommentUserJoin {
+public class DTOCommentUserJoin {
 
     private Long id;
     private String content;
     private Integer post;
-    private LocalDateTime date_of_comment;
+    private Timestamp date_of_comment;
     private String first_name;
     private String surname;
     private String profile_picture;
 
-    public DTOcommentUserJoin(Long id, String content,  Integer post, LocalDateTime date_of_comment, String first_name,String surname, String profile_picture){
+    public DTOCommentUserJoin(Long id, String content, Integer post, Timestamp date_of_comment, String first_name, String surname, String profile_picture){
         this.id = id;
         this.content = content;
         this.post = post;
