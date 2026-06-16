@@ -200,6 +200,12 @@ public class SignUpController {
 
         userRepository.save(user);
 
+        Optional<User> newUser = userRepository.findUserByEmailAddress(user.getEmailAddress());
+
+        session.setAttribute("profilePicture", newUser.get().getProfilePicture());
+        session.setAttribute("userID", newUser.get().getId());
+        session.setAttribute("userUsername", newUser.get().getUsername());
+
         return new RedirectView("/posts");
     }
 
