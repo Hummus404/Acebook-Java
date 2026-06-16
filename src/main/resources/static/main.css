@@ -233,6 +233,7 @@ nav ul li a:hover {
     margin-bottom: 14px;
 }
 
+.input,
 .input-content-field,
 .input-image {
     width: 100%;
@@ -293,6 +294,70 @@ nav ul li a:hover {
     margin-top: 12px;
     padding: 10px 12px;
 }
+
+/* Sign-up page */
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 20px;
+}
+
+/* Layout only, surface from .card */
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 24px;
+}
+
+.auth-card h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--acebook-headline);
+}
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--acebook-headline);
+}
+
+/* Validation messages -> alert chips (could become a shared .alert later) */
+.auth-errors {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.auth-error {
+    padding: 8px 10px;
+    font-size: 14px;
+    color: var(--acebook-accent);
+    background: #fff0f3;
+    border: 1px solid var(--acebook-accent);
+    border-radius: 6px;
+}
+
+/* Submit + Reset share the row */
+.auth-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.auth-actions .btn,
+.auth-actions .btn--secondary {
+    flex: 1;
+}
+
 
 /* Responsive rules */
 @media (max-width: 640px) {
