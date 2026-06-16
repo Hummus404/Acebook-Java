@@ -38,9 +38,9 @@ public class ProfileController {
         List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId().intValue());
 
         model.addAttribute("posts", posts);
-        System.out.println("POST COUNT: " + posts.size());
-        posts.forEach(p -> System.out.println(p.getPoster()));
-        System.out.println("USER ID: " + user.getId());
+//        System.out.println("POST COUNT: " + posts.size());
+//        posts.forEach(p -> System.out.println(p.getPoster()));
+//        System.out.println("USER ID: " + user.getId());
 
         return "profile";
     }
