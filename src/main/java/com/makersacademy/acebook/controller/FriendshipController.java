@@ -31,7 +31,7 @@ public class FriendshipController {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof DefaultOidcUser oidc)) return null;
         String email = (String) oidc.getAttributes().get("email");
-        return userRepository.findUserByUsername(email).orElse(null);
+        return userRepository.findUserByEmailAddress(email).orElse(null);
     }
 
     @PostMapping("/request/{addresseeId}")
@@ -49,7 +49,7 @@ public class FriendshipController {
             friendship.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendship);
         }
-        return "redirect:/profile/{username}";
+        return "redirect:/profile/" + addressee.getUsername();
     }
 
     @PostMapping("/accept/{friendshipId}")
