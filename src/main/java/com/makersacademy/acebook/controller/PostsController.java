@@ -1,10 +1,8 @@
 package com.makersacademy.acebook.controller;
 
 import com.makersacademy.acebook.DTOs.DTOPostUserJoin;
-import com.makersacademy.acebook.model.Like;
-import com.makersacademy.acebook.model.Post;
-import com.makersacademy.acebook.model.PostView;
-import com.makersacademy.acebook.model.User;
+import com.makersacademy.acebook.model.*;
+import com.makersacademy.acebook.repository.CommentRepository;
 import com.makersacademy.acebook.repository.LikeRepository;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
@@ -40,6 +38,9 @@ public class PostsController {
     @Autowired
     LikeRepository likeRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     private User currentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof DefaultOidcUser oidc)) return null;
@@ -48,7 +49,7 @@ public class PostsController {
     }
 
     @GetMapping("/posts")
-    public String index(Model model, HttpSession session) {
+    public String index(Model model, Comment comment, HttpSession session) {
         Iterable<Post> posts = postRepository.findAllByOrderByDateOfPostDesc();
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
@@ -58,9 +59,13 @@ public class PostsController {
                     likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
             postViews.add(new PostView(post, count, liked));
         }
+
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
         model.addAttribute("posts", posts);
+        model.addAttribute("comment", comment);
+        model.addAttribute("commentRepository", commentRepository);
+
         session.setAttribute("userID", me.getId());
 
         return "posts/index";

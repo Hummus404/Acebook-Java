@@ -52,6 +52,22 @@
                     <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
                 </form>
             </div>
+
+            <div th:each = "comment : ${commentRepository.findAllByPost({pv.post.id})}">
+
+                <p th:text = "${comment.getContent()}"></p>
+            </div>
+
+            <div>
+
+                <form id="comment-form" action="#" th:action="@{/comment/new}" th:object="${comment}" method="post">
+                    <p>Comment: <input class="input-content-field" type="text" th:field="*{content}" /></p>
+                    <input type="hidden" name = "post" th:value = "${pv.post.id}" />
+                    <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+                </form>
+<!--                "${pv.post.id}"-->
+
+            </div>
         </li>
     </ul>
 </main>
@@ -71,3 +87,19 @@
 
 </body>
 </html>
+
+
+<!--            <div th:each = "comment : ${commentRepository.findAllByPost(${pv.post.id})}">-->
+
+
+
+
+
+
+
+
+<!--            <div th:each = "comment : ${commentRepository.findAllByPost({pv.post.id})}">-->
+
+
+
+

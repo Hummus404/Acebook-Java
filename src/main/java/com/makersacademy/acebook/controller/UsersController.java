@@ -33,6 +33,7 @@ public class UsersController {
         if (uniqueUser.isPresent()){
 
             session.setAttribute("profilePicture", uniqueUser.get().getProfilePicture());
+            session.setAttribute("userID", uniqueUser.get().getId());
             return new RedirectView("/posts");
 
         }

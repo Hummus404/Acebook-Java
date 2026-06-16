@@ -189,16 +189,15 @@ public class SignUpController {
 
         }
 
-
-
         user.setEmailAddress(principal.getEmail());
 
         userRepository.save(user);
 
         Optional<User> newUser = userRepository.findUserByEmailAddress(user.getEmailAddress());
 
-
         session.setAttribute("profilePicture", newUser.get().getProfilePicture());
+        session.setAttribute("userID", newUser.get().getId());
+
         return new RedirectView("/posts");
     }
 
