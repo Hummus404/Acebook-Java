@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <script src="https://cdn.auth0.com/js/lock/11.30/lock.min.js"></script>
+</head>
+<body>
+<h2>Login to Acebook</h2>
+<div id="login-container"></div>
+<script>
+    const lock = new Auth0Lock(
+        'SdwJeBlA9ehSbaqBCVTvEwKdXrrTpCYr',
+        'dev-jqf4olw6v4md12ul.us.auth0.com',
+        {
+            auth: {
+                redirectUrl: 'http://localhost:8080/callback',
+                responseType: 'token id_token',
+                params: {
+                    scope: 'openid profile email'
+                }
+            },
+            allowedConnections: ['Username-Password-Authentication']
+        }
+    );
+    lock.show();
+</script>
+</body>
+</html>
