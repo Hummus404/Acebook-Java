@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
     List<Post> findAllByOrderByDateOfPostDesc();
-    List<Post> findByPosterOrderByDateOfPostDesc(Integer userId);
+    List<Post> findByPosterOrderByDateOfPostDesc(Integer poster);
 }
 

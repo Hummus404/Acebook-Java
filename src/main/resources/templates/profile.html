@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
     <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/main.css" />
 </head>
 <body>
     <div th:replace="~{posts/base :: header}"></div>
-    <section>
-        <img th:src="${user.profilePicture}" alt="User-image">
-        <p th:text="${user.username}"></p>
-    </section>
+        <h1>Profile</h1>
+        <section>
+            <img th:src="${user.profilePicture}" alt="User-image">
+            <p th:text="${user.username}"></p>
+        </section>
 
+        <section>
+            <div th:each="post : ${posts}">
+                <img th:src="@{/images/{file}(file=${post.image})}" alt="">
+                <p th:text="${post.content}"></p>
+            </div>
+        </section>
     <section>
         <div th:each="post : ${posts}">
             <p th:text="${post.content}"></p>
@@ -49,9 +56,9 @@
             <span>✓ Friends</span>
         </div>
 
-        <div th:if="${!isOwnProfile and !isFriend and friendshipStatus != 'INCOMING_PENDING'}">
-            <p>Add <span th:text="${user.first_name}"></span> as a friend to see their full profile.</p>
-        </div>
+<!--        <div th:if="${!isOwnProfile and !isFriend and friendshipStatus != 'INCOMING_PENDING'}">-->
+<!--            <p>Add <span th:text="${user.first_name}"></span> as a friend to see their full profile.</p>-->
+<!--        </div>-->
 
     </div>
 

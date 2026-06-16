@@ -20,10 +20,8 @@ import java.util.Optional;
 
 @Controller
 public class ProfileController {
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PostRepository postRepository;
 
@@ -37,45 +35,24 @@ public class ProfileController {
         return userRepository.findUserByEmailAddress(email).orElse(null);
     }
 
-    @GetMapping("/profile")
-    public String profile(Model model) {
-
-        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-
-        String emailAddress = (String) principal.getAttributes().get("email");
-
-        User user = userRepository.findUserByEmailAddress(emailAddress).orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println("USER IS: ");
-        System.out.println(user);
-        model.addAttribute("user", user);
-        model.addAttribute("userName", user.getUsername());
-
-        List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId().intValue());
-
-        model.addAttribute("posts", posts);
-
-        return "profile";
-    }
-
     @GetMapping("/profile/{username}")
     public String showUserProfile(@PathVariable String username, Model model) {
         User me = currentUser();
-        User profileUser = userRepository.findUserByUsername(username).orElseThrow();
+        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId().intValue());
 
-        model.addAttribute("profileUser", profileUser);
+        model.addAttribute("user", user);
+        model.addAttribute("posts", posts);
 
-        if (me.getId().equals(profileUser.getId())) {
+        if (me.getId().equals(user.getId())) {
             model.addAttribute("isOwnProfile", true);
         } else {
             model.addAttribute("isOwnProfile", false);
 
             Optional<Friendship> sent = friendshipRepository
-                    .findByRequesterAndAddressee(me, profileUser);
+                    .findByRequesterAndAddressee(me, user);
             Optional<Friendship> received = friendshipRepository
-                    .findByRequesterAndAddressee(profileUser, me);
+                    .findByRequesterAndAddressee(user, me);
 
             if (sent.isPresent()) {
                 model.addAttribute("friendshipStatus", sent.get().getStatus().toString());
@@ -92,7 +69,7 @@ public class ProfileController {
             model.addAttribute("isFriend", isFriend);
         }
 
-        return "users/profile";
+        return "profile";
     }
 
 }

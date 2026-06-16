@@ -49,7 +49,7 @@ public class FriendshipController {
             friendship.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendship);
         }
-        return "redirect:/users/" + addresseeId;
+        return "redirect:/profile/{username}";
     }
 
     @PostMapping("/accept/{friendshipId}")
