@@ -1,0 +1,49 @@
+name: Deploy Acebook (Docker + Render)
+
+on:
+  push:
+    branches:
+      - acebook-online
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Get your code
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # 2. Set up Java 21 (IMPORTANT for Spring Boot 3+)
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # 3. Build JAR
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      # 4. Login to Docker Hub
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 5. Build Docker image (matches your compose)
+      - name: Build Docker image
+        run: |
+          docker build -t hummus404/acebook:latest .
+          docker tag hummus404/acebook:latest hummus404/acebook:${{ github.sha }}
+
+      # 6. Push image
+      - name: Push Docker image
+        run: |
+          docker push hummus404/acebook:latest
+          docker push hummus404/acebook:${{ github.sha }}
+
+#      # 7. Trigger Render deploy
+#      - name: Trigger Render deploy
+#        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
