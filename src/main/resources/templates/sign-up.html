@@ -32,7 +32,7 @@
             <div class="form-field">
                 <label for="username-input">Username</label>
                 <input id="username-input" class="input" type="text"
-                       placeholder="Choose a username" th:field="*{username}"/>
+                       placeholder="Choose a username" th:field="*{username}" oninput="this.value = this.value.replace(/\s/g, '')"/> <br>
             </div>
 
             <div class="form-field">

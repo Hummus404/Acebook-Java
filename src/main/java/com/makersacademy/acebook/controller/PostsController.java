@@ -81,18 +81,25 @@ public class PostsController {
             post.setImage(filename);
         }
 
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String emailAddress = (String) principal.getAttributes().get("email");
+
+        User user = userRepository.findUserByEmailAddress(emailAddress)
+                .orElseThrow();
+
+        Integer userId = user.getId().intValue();
+
+        post.setPoster(userId);
+
         repository.save(post);
 
         return new RedirectView("/posts");
 
 
-    }
-
-    @PostMapping("/posts")
-    public RedirectView create(@ModelAttribute Post post) {
-        post.setDateOfPost(LocalDateTime.now());
-        repository.save(post);
-        return new RedirectView("/posts");
     }
 
     @PostMapping("/posts/{id}/like")
@@ -102,7 +109,6 @@ public class PostsController {
         System.out.println("Hello A");
 
         if (me != null) {
-            System.out.println("Hello B");
 
             likeRepository.findByPostIdAndUserId(id, me.getId()).ifPresentOrElse(
                     likeRepository::delete,
@@ -111,7 +117,6 @@ public class PostsController {
                     // not yet -> like
             );
         }
-        System.out.println("Hello C");
 
         return new RedirectView("/posts");
     }
