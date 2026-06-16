@@ -10,7 +10,7 @@
     <div th:replace="~{posts/base :: header}"></div>
         <h1>Profile</h1>
         <section>
-            <img th:src="${user.profilePicture}" alt="">
+            <img th:src="@{/images/{file}(file=${user.profilePicture})}" alt="">
             <p th:text="${user.username}"></p>
         </section>
 
@@ -19,6 +19,10 @@
                 <img th:src="@{/images/{file}(file=${post.image})}" alt="">
                 <p th:text="${post.content}"></p>
             </div>
+        </section>
+
+        <section>
+<!--            Friends list (compact)-->
         </section>
 </body>
 </html>
