@@ -166,7 +166,7 @@ nav ul li a:hover {
     --acebook-accent: #ef4565;
 }
 
-/* Shared preview layout */
+/* Shared components */
 
 /* Avatar: a circular <img> photo OR a text initial. Default 44px. */
 .avatar, .post-avatar {
@@ -263,13 +263,6 @@ nav ul li a:hover {
     gap: 12px;
     padding: 16px;
 }
-
-.post-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 
 .post-content p {
     color: var(--acebook-paragraph);
