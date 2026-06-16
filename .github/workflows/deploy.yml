@@ -44,6 +44,6 @@ jobs:
           docker push hummus404/acebook:latest
           docker push hummus404/acebook:${{ github.sha }}
 
-#      # 7. Trigger Render deploy
-#      - name: Trigger Render deploy
-#        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+      # 7. Trigger Render deploy
+      - name: Trigger Render deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
