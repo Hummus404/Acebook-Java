@@ -16,7 +16,7 @@
     <span th:if="${bothNamesBlank}">Both names must be provided</span>
     <form th:action="@{/sign_up/new}" th:object="${sign_up}" method="post" enctype="multipart/form-data" >
         <label th:for="username">Username:</label>
-        <input id="username-input" type="text" placeholder="Choose a username" th:field="*{username}"/> <br>
+        <input id="username-input" type="text" placeholder="Choose a username" th:field="*{username}"  oninput="this.value = this.value.replace(/\s/g, '')"/> <br>
         <label th:for="first_name">First Name:</label>
         <input id="first-name-input" type="text" th:placeholder="${firstName}" th:field="*{first_name}"/> <br>
         <label th:for="surname">Surname:</label>
