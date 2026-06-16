@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -8,10 +7,6 @@
 
 body {
     background: #d8d8e0;
-}
-
-nav + * {
-    padding: 60px 60px;
 }
 
 .hero {
@@ -159,4 +154,228 @@ nav ul li a:hover {
 
 .sub-menu-link:hover p {
     font-weight: 600;
+}
+
+/* Palette variables */
+:root {
+    --acebook-background: #ffffff;
+    --acebook-headline: #094067;
+    --acebook-paragraph: #5f6c7b;
+    --acebook-highlight: #3da9fc;
+    --acebook-secondary: #90b4ce;
+    --acebook-accent: #ef4565;
+}
+
+/* Shared components */
+
+/* Avatar: a circular <img> photo OR a text initial. Default 44px. */
+.avatar, .post-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    object-fit: cover; overflow: hidden;      /* new: holds a real photo */
+    display: grid; place-items: center;        /* centres an initial */
+    background: var(--acebook-secondary);
+    color: var(--acebook-headline);
+    font-weight: 800;
+}
+.avatar--sm { width: 32px; height: 32px; font-size: 14px; }   /* comments */
+.avatar--lg { width: 80px; height: 80px; font-size: 28px; }   /* profile */
+
+/* User chip: avatar + name in a row. Generalises .post-header. */
+.user-chip, .post-header { display: flex; align-items: center; gap: 12px; }
+.user-chip__name { font-weight: 700; color: var(--acebook-headline); }
+.user-chip__meta { color: var(--acebook-paragraph); font-size: 0.85em; }
+
+/* Buttons */
+.btn, .submit-btn, .post-card button {
+    border: 0; border-radius: 6px;
+    background: var(--acebook-highlight); color: #fff;
+    font-weight: 700; padding: 8px 14px; cursor: pointer;
+}
+.btn--secondary, input[type="reset"], #greeting button {
+    border: 1px solid var(--acebook-secondary);
+    background: #fff; color: var(--acebook-headline);
+    font-weight: 700; padding: 7px 12px; border-radius: 6px; cursor: pointer;
+}
+
+/* Card surface */
+.card, #greeting, #post-form, .post-card {
+    border: 2px solid var(--acebook-headline);
+    background: #fff; border-radius: 8px;
+}
+
+.feed-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 64px;
+    background: var(--acebook-background);
+    color: var(--acebook-paragraph);
+}
+
+.feed-page h1,
+.feed-page h2 {
+    color: var(--acebook-headline);
+}
+
+
+#greeting {
+    padding: 14px 16px;
+    margin-bottom: 20px;
+}
+
+/* Post composer */
+#post-form {
+    padding: 20px;
+    margin-bottom: 28px;
+}
+
+#post-form p {
+    margin-bottom: 14px;
+}
+
+.input,
+.input-content-field,
+.input-image {
+    width: 100%;
+    border: 1px solid var(--acebook-secondary);
+    border-radius: 6px;
+    padding: 10px;
+    color: var(--acebook-headline);
+    background: #ffffff;
+}
+
+/* Timeline */
+.timeline-heading {
+    border-bottom: 2px solid var(--acebook-headline);
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+}
+
+.timeline-list {
+    list-style: none;
+    display: grid;
+    gap: 18px;
+}
+
+/* Post cards */
+.post-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+
+.post-content p {
+    color: var(--acebook-paragraph);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.post-card img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 2px solid var(--acebook-secondary);
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+.like-count {
+    color: var(--acebook-headline);
+    font-weight: 700;
+}
+
+/* Comment placeholder */
+.comment-placeholder {
+    border-left: 4px solid var(--acebook-accent);
+    color: var(--acebook-paragraph);
+    background: #f7fbff;
+    margin-top: 12px;
+    padding: 10px 12px;
+}
+
+/* Sign-up page */
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 20px;
+}
+
+/* Layout only, surface from .card */
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 24px;
+}
+
+.auth-card h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--acebook-headline);
+}
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--acebook-headline);
+}
+
+/* Validation messages -> alert chips (could become a shared .alert later) */
+.auth-errors {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.auth-error {
+    padding: 8px 10px;
+    font-size: 14px;
+    color: var(--acebook-accent);
+    background: #fff0f3;
+    border: 1px solid var(--acebook-accent);
+    border-radius: 6px;
+}
+
+/* Submit + Reset share the row */
+.auth-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.auth-actions .btn,
+.auth-actions .btn--secondary {
+    flex: 1;
+}
+
+
+/* Responsive rules */
+@media (max-width: 640px) {
+    nav {
+        padding: 12px 18px;
+    }
+
+    nav ul {
+        font-size: 16px;
+        margin: 0 12px;
+    }
+
+    nav ul li {
+        margin: 8px 6px;
+    }
+
+    .feed-page {
+        padding: 24px 14px 48px;
+    }
+
 }
