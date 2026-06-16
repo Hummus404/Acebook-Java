@@ -5,17 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Profile</h1>
-    <section>
-        <img th:src="${user.profilePicture}" alt="">
-        <p th:text="${user.username}"></p>
-    </section>
+    <div th:replace="~{posts/base :: header}"></div>
+        <h1>Profile</h1>
+        <section>
+            <img th:src="${user.profilePicture}" alt="">
+            <p th:text="${user.username}"></p>
+        </section>
 
-    <section>
-        <div th:each="post : ${posts}">
-            <img th:src="@{/images/{file}(file=${post.image})}" alt="">
-            <p th:text="${post.content}"></p>
-        </div>
-    </section>
+        <section>
+            <div th:each="post : ${posts}">
+                <img th:src="@{/images/{file}(file=${post.image})}" alt="">
+                <p th:text="${post.content}"></p>
+            </div>
+        </section>
 </body>
 </html>

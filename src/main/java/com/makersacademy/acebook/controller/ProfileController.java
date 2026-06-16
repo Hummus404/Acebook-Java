@@ -21,19 +21,20 @@ public class ProfileController {
     @Autowired
     private PostRepository postRepository;
 
-    @GetMapping("/profile")
-    public String profile(Model model) {
+    @GetMapping("/profile/{username}")
+    public String profile(@PathVariable String username, Model model) {
 
-        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+//        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//
+//        String emailAddress = (String) principal.getAttributes().get("email");
 
-        String emailAddress = (String) principal.getAttributes().get("email");
-
-        User user = userRepository.findUserByEmailAddress(emailAddress).orElseThrow(() -> new RuntimeException("User not found"));
+//        User user = userRepository.findUserByEmailAddress(emailAddress).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         model.addAttribute("user", user);
-        model.addAttribute("userName", user.getUsername());
+//        model.addAttribute("userName", user.getUsername());
 
         List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId().intValue());
 

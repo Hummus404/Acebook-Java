@@ -102,13 +102,6 @@ public class PostsController {
 
     }
 
-//    @PostMapping("/posts")
-//    public RedirectView create(@ModelAttribute Post post) {
-//        post.setDateOfPost(LocalDateTime.now());
-//        repository.save(post);
-//        return new RedirectView("/posts");
-//    }
-
     @PostMapping("/posts/{id}/like")
     public RedirectView like(@PathVariable Long id) {
         System.out.println("Hello K");
