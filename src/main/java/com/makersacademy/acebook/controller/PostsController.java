@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -47,7 +48,6 @@ public class PostsController {
 
     @GetMapping("/posts")
     public String index(Model model) {
-        Iterable<Post> posts = repository.findAllByOrderByDateOfPostDesc();
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
         for (Post post : repository.findAllByOrderByDateOfPostDesc()) {
@@ -58,9 +58,7 @@ public class PostsController {
         }
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
-        model.addAttribute("posts", posts);
-        model.addAttribute("post", new Post());
-        return "posts/index";
+        return "posts/posts";
     }
 
     @PostMapping("/posts/new")
@@ -118,15 +116,25 @@ public class PostsController {
     }
 
     @GetMapping("/posts/most-liked")
-    public String mostLiked (Model model) {
+    public String mostLiked(Model model) {
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
-        for (Post post: repository.findAll()) {
+        for (Post post : repository.findAll()) {
             long likeCount = likeRepository.countByPostId(post.getId());
-
-
+            boolean likedByMe = me != null &&
+                    likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
+            postViews.add(new PostView(post, likeCount, likedByMe));
         }
-
+        postViews.sort(Comparator.comparingLong(PostView::getLikeCount).reversed());
+        model.addAttribute("postViews", postViews);
+        model.addAttribute("post", new Post());
+        return "posts/posts";
     }
 
+
+
+
 }
+
+
+
