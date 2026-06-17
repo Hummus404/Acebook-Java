@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,6 +25,7 @@ public class ProfilePageTest {
     Faker faker;
     WebDriverWait wait;
     String expectedUserName;
+    String defaultProfilePic;
 
     @BeforeEach
     public void setup() {
@@ -104,6 +106,9 @@ public class ProfilePageTest {
         assertTrue(username.isDisplayed());
         assertTrue(profilePic.isDisplayed());
 
+        String defaultProfilePic = "http://localhost:8081/images/defaultProfileAvatar.jpeg";
+
         assertEquals(expectedUserName, username.getText());
+        assertTrue(Objects.requireNonNull(profilePic.getAttribute("src")).contains(defaultProfilePic));
     }
 }
