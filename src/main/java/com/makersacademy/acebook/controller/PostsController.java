@@ -61,16 +61,17 @@ public class PostsController {
 
 
             List<CommentView> commentViews = new ArrayList<>();
-            for (DTOCommentUserJoin comments : commentRepository.commentsJoin()) {
+            for (DTOCommentUserJoin comments : commentRepository.commentsJoin((int) (long) post.getId())) {
                 long commentCount = commentLikeRepository.countByCommentId(comments.getId());
                 System.out.println(comments.getId());
                 System.out.println("test 1");
                 boolean commentLiked = me != null &&
                         commentLikeRepository.existsByCommentIdAndUserId(comments.getId(), me.getId());
                 System.out.println("test 2");
-                commentViews.add(new CommentView(comments, commentCount, commentLiked, comment.getId()));
+                commentViews.add(new CommentView(comments, commentCount, commentLiked));
             }
             System.out.println("test 3");
+            System.out.println(commentViews);
 
             postViews.add(new PostView(post, count, liked, commentViews));
         }
