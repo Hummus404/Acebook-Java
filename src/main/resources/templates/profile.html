@@ -10,8 +10,8 @@
     <div th:replace="~{posts/base :: header}"></div>
         <h1>Profile</h1>
         <section>
-            <img th:src="@{/images/{file}(file=${user.profilePicture})}" alt="">
-            <p th:text="${user.username}"></p>
+            <img id="profile-pic" th:src="@{/images/{file}(file=${user.profilePicture})}" alt="">
+            <p id="username-text" th:text="${user.username}"></p>
         </section>
 
         <section>
