@@ -18,5 +18,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     )
     Iterable<DTOPostUserJoin> postsJoin();
 
+    List<Post> findByPosterOrderByDateOfPostDesc(Integer poster);
 }
 

@@ -63,35 +63,23 @@ public class PostsController {
             List<CommentView> commentViews = new ArrayList<>();
             for (DTOCommentUserJoin comments : commentRepository.commentsJoin((int) (long) post.getId())) {
                 long commentCount = commentLikeRepository.countByCommentId(comments.getId());
-                System.out.println(comments.getId());
-                System.out.println("test 1");
                 boolean commentLiked = me != null &&
                         commentLikeRepository.existsByCommentIdAndUserId(comments.getId(), me.getId());
-                System.out.println("test 2");
                 commentViews.add(new CommentView(comments, commentCount, commentLiked, comments.getId()));
             }
-            System.out.println("test 3");
-            System.out.println(commentViews);
 
             postViews.add(new PostView(post, count, liked, commentViews));
         }
-
-
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
         model.addAttribute("posts", posts);
         model.addAttribute("comment", comment);
         model.addAttribute("commentRepository", commentRepository);
 
-//        Iterable<DTOCommentUserJoin>  commentUserJoin = commentRepository.commentsJoin();
-
-//        model.addAttribute("commentUserJoin", commentUserJoin);
-
         session.setAttribute("userID", me.getId());
 
         return "posts/index";
     }
-
 
     @PostMapping("/posts/new")
     public RedirectView create(@ModelAttribute Post post, @RequestParam("imageFile") MultipartFile image, HttpSession session) throws IOException {
@@ -111,6 +99,19 @@ public class PostsController {
             );
             post.setImage(filename);
         }
+//        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//
+//        String emailAddress = (String) principal.getAttributes().get("email");
+//
+//        User user = userRepository.findUserByEmailAddress(emailAddress)
+//                .orElseThrow();
+//
+//        Integer userId = user.getId().intValue();
+//
+//        post.setPoster(userId);
 
 
         post.setPoster((int) (long) session.getAttribute("userID"));
