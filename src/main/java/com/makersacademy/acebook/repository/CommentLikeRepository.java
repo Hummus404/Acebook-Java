@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface CommentLikeRepository extends CrudRepository <CommentLikes, Long> {
     long countByCommentId(long commentId); // displays count
 
-    Optional<Like> findByCommentIdAndUserId(Long commentId, Long userID); // toggle implementation
+    Optional<CommentLikes> findByCommentIdAndUserId(Long commentId, Long userID); // toggle implementation
 
     boolean existsByCommentIdAndUserId(Long commentId, Long userId); // button labelling
 

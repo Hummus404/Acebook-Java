@@ -67,9 +67,9 @@
 
                     <div class="post-actions">
                         <span class="like-count" th:text="${comment.likeCount}"></span> likes
-<!--                        <form th:action="@{/posts/{id}/like(id=${comment.id})}" method="post">-->
-<!--                            <button type="submit" th:text="${comment.likedByMe} ? 'Unlike' : 'Like'">Like</button>-->
-<!--                        </form>-->
+                        <form th:action="@{/posts/{id}/comment-likes(id=${comment.commentsId})}" method="post">
+                            <button type="submit" th:text="${comment.likedByMe} ? 'Unlike' : 'Like'">Like</button>
+                        </form>
                     </div>
 
                 </div>

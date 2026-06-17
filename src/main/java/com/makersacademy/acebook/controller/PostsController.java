@@ -68,7 +68,7 @@ public class PostsController {
                 boolean commentLiked = me != null &&
                         commentLikeRepository.existsByCommentIdAndUserId(comments.getId(), me.getId());
                 System.out.println("test 2");
-                commentViews.add(new CommentView(comments, commentCount, commentLiked));
+                commentViews.add(new CommentView(comments, commentCount, commentLiked, comments.getId()));
             }
             System.out.println("test 3");
             System.out.println(commentViews);
