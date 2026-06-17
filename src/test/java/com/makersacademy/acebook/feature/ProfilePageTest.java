@@ -21,22 +21,36 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProfilePageTest {
-    WebDriver driver;
     Faker faker;
+    WebDriver driver;
     WebDriverWait wait;
-    String expectedUserName;
+    String expectedUserName = "adrian_woz_here";
     String defaultProfilePic;
 
-    @BeforeEach
-    public void setup() {
-        System.setProperty("webdriver.chrome.driver", "/opt/homebrew/bin/chromedriver");
-        driver = new ChromeDriver();
-        faker = new Faker();
 
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public String signUp() {
+        String email = faker.name().username() + "@email.com";
 
-        expectedUserName = "adrian_woz_here";
+        driver.get("http://localhost:8081/");
+        driver.findElement(By.linkText("Sign up")).click();
+        driver.findElement(By.name("email")).sendKeys(email);
+        driver.findElement(By.name("password")).sendKeys("P@55qw0rd");
+        driver.findElement(By.name("action")).click();
 
+        driver.findElement(By.id("username-input")).sendKeys(email);
+        driver.findElement(By.id("first-name-input")).sendKeys("Random");
+        driver.findElement(By.id("surname-input")).sendKeys("user");
+        driver.findElement(By.id("submit-btn")).click();
+
+        wait.until(driver -> driver.findElement(By.id("greeting")));
+//        String greetingText = driver.findElement(By.id("greeting")).getText();
+//        assertTrue(greetingText.startsWith("Signed in as " + email));
+
+        return email;
+
+    }
+
+    public void signIn() {
         driver.get("http://localhost:8081/");
         WebElement username = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.name("username"))
@@ -46,8 +60,8 @@ public class ProfilePageTest {
                 ExpectedConditions.visibilityOfElementLocated(By.name("password"))
         );
 
-        username.clear();
-        password.clear();
+//        username.clear();
+//        password.clear();
 
         username.sendKeys("test1234@email.com");
         password.sendKeys(" -6G3b5!(dOcJ[c')^&>8M5(w");
@@ -56,6 +70,23 @@ public class ProfilePageTest {
         ).click();
 
         wait.until(ExpectedConditions.urlContains("/posts"));
+
+
+    }
+
+
+
+    @BeforeEach
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "/opt/homebrew/bin/chromedriver");
+        driver = new ChromeDriver();
+        faker = new Faker();
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
+
+
 
     }
 
@@ -67,7 +98,9 @@ public class ProfilePageTest {
     @Test
     public void rendersPage() {
 
-        wait.until(ExpectedConditions.urlContains("/posts"));
+        signIn();
+
+//        wait.until(ExpectedConditions.urlContains("/posts"));
 
         Actions action = new Actions(driver);
 
@@ -85,6 +118,8 @@ public class ProfilePageTest {
 
     @Test
     public void showsUsernameAndProfilePic() {
+
+        signIn();
 
         wait.until(ExpectedConditions.urlContains("/posts"));
 
@@ -106,9 +141,15 @@ public class ProfilePageTest {
         assertTrue(username.isDisplayed());
         assertTrue(profilePic.isDisplayed());
 
-        String defaultProfilePic = "http://localhost:8081/images/defaultProfileAvatar.jpeg";
+        defaultProfilePic = "http://localhost:8081/images/defaultProfileAvatar.jpeg";
 
         assertEquals(expectedUserName, username.getText());
         assertTrue(Objects.requireNonNull(profilePic.getAttribute("src")).contains(defaultProfilePic));
+    }
+
+    @Test
+    public void showOnlyLoggedInUsersPosts() {
+       String email = signUp();
+
     }
 }
