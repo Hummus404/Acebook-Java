@@ -17,7 +17,12 @@
 					<li><a th:href="@{/posts}">Home</a></li>
 					<li><a th:href="@{/friends}">Friends</a></li>
 				</ul>
-
+				<!--	THIS IS MY SEARCH BAR AND BUTTON DO NOT KILL IT PLEASE-->
+				<form action="/search" method="get">
+				<input type="text" name="userSearch" minlength="3" placeholder="Search...">
+				<button type="submit" class="search-btn">Search</button>
+				</form>
+				<!--	THIS IS MY SEARCH BAR AND BUTTON DO NOT KILL IT PLEASE-->
 				<div class="user-menu">
 					<img th:src="@{/images/user_img.jpg}" alt="user-img" class="user-img">
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Search Results</title>
+  <link rel="stylesheet" href="/main.css" />
+</head>
+
+<body>
+<div th:replace="~{posts/base :: header}"></div>
+<h1> Search Results</h1>
+
+<ul th:if="${searchResults != null}">
+  <li th:each="user : ${searchResults}">
+    <div class="search-card">
+      <a th:href="@{/profile/{username}(username=${user.username})}">
+      <img th:src="${user.profilePicture != null ? 'images/' + user.profilePicture : 'images/defaultProfileAvatar.jpeg'}"
+           class="logo"
+           alt="Profile Picture" />
+      <p th:text="'Username: ' + ${user.username}"></p>
+      </a>
+      <p th:text="'Name: ' + ${user.first_name} + ' ' + ${user.surname}"></p>
+    </div>
+  </li>
+</ul>
+<div th:if="${searchResults == null or searchResults.isEmpty()}">
+  <p>No users found...</p>
+</div>
+</body>
+</html>
