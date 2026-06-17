@@ -3,10 +3,7 @@ package com.makersacademy.acebook.controller;
 import com.makersacademy.acebook.DTOs.DTOCommentUserJoin;
 import com.makersacademy.acebook.DTOs.DTOPostUserJoin;
 import com.makersacademy.acebook.model.*;
-import com.makersacademy.acebook.repository.CommentRepository;
-import com.makersacademy.acebook.repository.LikeRepository;
-import com.makersacademy.acebook.repository.PostRepository;
-import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.repository.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,6 +39,9 @@ public class PostsController {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    CommentLikeRepository commentLikeRepository;
+
     private User currentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof DefaultOidcUser oidc)) return null;
@@ -58,8 +58,23 @@ public class PostsController {
             long count = likeRepository.countByPostId(post.getId());
             boolean liked = me != null &&
                     likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
-            postViews.add(new PostView(post, count, liked));
+
+
+            List<CommentView> commentViews = new ArrayList<>();
+            for (DTOCommentUserJoin comments : commentRepository.commentsJoin()) {
+                long commentCount = commentLikeRepository.countByCommentId(comments.getId());
+                System.out.println(comments.getId());
+                System.out.println("test 1");
+                boolean commentLiked = me != null &&
+                        commentLikeRepository.existsByCommentIdAndUserId(comments.getId(), me.getId());
+                System.out.println("test 2");
+                commentViews.add(new CommentView(comments, commentCount, commentLiked, comment.getId()));
+            }
+            System.out.println("test 3");
+
+            postViews.add(new PostView(post, count, liked, commentViews));
         }
+
 
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());

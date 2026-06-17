@@ -64,6 +64,18 @@
 
                     </div>
                     <p th:text = "${comment.getContent()}"></p>
+                    <div class="post-actions">
+                        <div th:each="commentLike : ${pv.commentView}">
+                            <div th:if="${commentLike.id == comment.id}">
+                                uhifLHSIDFHGBSJUDgfus
+
+                            </div>
+                            </div>
+<!--                            <span class="like-count" th:text="${pv.commentViews.}"></span> likes-->
+                        <!--                            <form th:action="@{/posts/{id}/like(id=${comment.id})}" method="post">-->
+                        <!--                            <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>-->
+                        <!--                            </form>-->
+                                            </div>
 
                 </div>
 
