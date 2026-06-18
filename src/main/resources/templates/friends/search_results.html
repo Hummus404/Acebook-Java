@@ -19,9 +19,9 @@
       <img th:src="${user.profilePicture != null ? 'images/' + user.profilePicture : 'images/defaultProfileAvatar.jpeg'}"
            class="logo"
            alt="Profile Picture" />
-      <p th:text="'Username: ' + ${user.username}"></p>
+      <p class="username-tag" th:text="'Username: ' + ${user.username}"></p>
       </a>
-      <p th:text="'Name: ' + ${user.first_name} + ' ' + ${user.surname}"></p>
+      <p class="name-tag" th:text="'Name: ' + ${user.first_name} + ' ' + ${user.surname}"></p>
     </div>
     <div>
 <!--      th:if="${friendshipStatus == 'NONE'}"-->
@@ -32,7 +32,7 @@
   </li>
 </ul>
 <div th:if="${searchResults == null or searchResults.isEmpty()}">
-  <p>No users found...</p>
+  <p class="no-result">No users found...</p>
 </div>
 </body>
 </html>

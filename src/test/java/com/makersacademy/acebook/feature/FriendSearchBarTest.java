@@ -2,6 +2,7 @@ package com.makersacademy.acebook.feature;
 
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -12,7 +13,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class FriendSearchBarTest {
     WebDriver driver;
     Faker faker;
@@ -57,8 +60,46 @@ public class FriendSearchBarTest {
     public void searchWithNoInputNotAllowed() {
         driver.get("http://localhost:8081/posts");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userSearch")));
+        String preSearch = driver.getCurrentUrl();
         driver.findElement(By.name("userSearch")).sendKeys("");
         driver.findElement(By.className("search-btn")).click();
-        assert
+        String postSearch = driver.getCurrentUrl();
+        assertEquals(preSearch, postSearch);
+
+    }
+    @Test
+    public void searchWithLessThanThreeCharsNotAllowed() {
+        driver.get("http://localhost:8081/posts");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userSearch")));
+        String preSearch = driver.getCurrentUrl();
+        driver.findElement(By.name("userSearch")).sendKeys("UY");
+        driver.findElement(By.className("search-btn")).click();
+        String postSearch = driver.getCurrentUrl();
+        assertEquals(preSearch, postSearch);
+    }
+
+    @Test
+    public void searchForExistingUserReturnsExistingUserOnResultsPAge() {
+        driver.get("http://localhost:8081/posts");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userSearch")));
+        String searchText = "Umut";
+        driver.findElement(By.name("userSearch")).sendKeys(searchText);
+        driver.findElement(By.className("search-btn")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("name-tag")));
+        String result = driver.findElement(By.className("name-tag")).getText();
+        assertTrue(result.contains(searchText));
+    }
+    @Test
+    public void searchForNonExistingUserReturnsNoUsersFound() {
+        driver.get("http://localhost:8081/posts");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userSearch")));
+        String searchText = "Supreme leader of the group";
+        driver.findElement(By.name("userSearch")).sendKeys(searchText);
+        driver.findElement(By.className("search-btn")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("no-result")));
+        String result = driver.findElement(By.className("no-result")).getText();
+        String noResultMsg = "No users found...";
+        assertEquals(noResultMsg, result);
+
     }
 }
