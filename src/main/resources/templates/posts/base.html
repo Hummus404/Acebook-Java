@@ -29,8 +29,10 @@
 					<div class="sub-menu-wrap" id="subMenu">
 						<div class="sub-menu">
 							<div class="user-info">
-								<a th:href="@{#}"><img th:src="@{/images/user_img.jpg}" alt="user-img" class="user-img"></a>
-								<h3> <a th:href="@{#}">Hira Mir</a></h3>
+								<img th:src="${currentProfilePicture != null ? 'images/' + currentProfilePicture : 'images/defaultProfileAvatar.jpeg'}"
+								     class="user-img"
+								     alt="Profile Picture" />
+								<p th:text="${currentUsername}"></p>
 							</div>
 							<hr>
 

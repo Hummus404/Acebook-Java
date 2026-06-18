@@ -53,12 +53,12 @@ public class FriendSearchBarTest {
         assertTrue(driver.findElement(By.name("userSearch")).isDisplayed());
 
     }
-    @Test
-    public void searchWithNoInputNotAllowed() {
-        driver.get("http://localhost:8081/posts");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userSearch")));
-        driver.findElement(By.name("userSearch")).sendKeys("");
-        driver.findElement(By.className("search-btn")).click();
-        assert
-    }
+//    @Test
+//    public void searchWithNoInputNotAllowed() {
+//        driver.get("http://localhost:8081/posts");
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userSearch")));
+//        driver.findElement(By.name("userSearch")).sendKeys("");
+//        driver.findElement(By.className("search-btn")).click();
+//        assert
+//    }
 }

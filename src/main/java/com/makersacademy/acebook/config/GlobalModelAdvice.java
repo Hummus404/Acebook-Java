@@ -20,4 +20,20 @@ public class GlobalModelAdvice {
 
         return (String) session.getAttribute("userUsername");
     }
+
+    @ModelAttribute("currentProfilePicture")
+    public String currentProfilePicture(HttpSession session) {
+
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String email = (String) principal.getAttributes().get("email");
+        User user = userRepository.findUserByEmailAddress(email).orElseThrow();
+
+        String profilePicture = user.getProfilePicture();
+
+        return (String) profilePicture;
+    }
 }
