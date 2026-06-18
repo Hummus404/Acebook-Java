@@ -57,11 +57,11 @@
                 <span th:text="${req.requester.username}"></span>
 
                 <form th:action="@{/friends/accept/{id}(id=${req.id})}" method="post" style="display:inline">
-                    <button type="submit">Accept</button>
+                    <button type="submit" class="accept-button">Accept</button>
                 </form>
 
                 <form th:action="@{/friends/decline/{id}(id=${req.id})}" method="post" style="display:inline">
-                    <button type="submit">Decline</button>
+                    <button type="submit" class="decline-button">Decline</button>
                 </form>
             </li>
         </ul>

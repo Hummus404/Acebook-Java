@@ -100,17 +100,108 @@ public class FriendRequestTest {
     }
 
     @Test
-    public void userOneCanSendFriendRequestFromUserTwosProfile(){
-        driver.get("http://localhost:8081/profile/adrian_woz_here");
+    public void userOneCanSendFriendRequestFromUserTwosProfile() {
+        driver.get("http://localhost:8081/profile/adrian_woz_not_here");
         wait.until(
                 ExpectedConditions.elementToBeClickable(By.cssSelector(".profile-actions button[type='submit']"))
         ).click();
         wait.until(
-                ExpectedConditions.urlContains("/profile/adrian_woz_here")
+                ExpectedConditions.urlContains("/profile/adrian_woz_not_here")
         );
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-actions button:disabled"))
         );
         assertTrue(driver.findElement(By.cssSelector(".profile-actions button:disabled")).isDisplayed());
     }
+
+    @Test
+    public void userTwoCanAcceptFriendRequestFromUserOneOnTheFriendsPage() {
+        driver.get("http://localhost:8081/logout");
+        WebElement username = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.name("username"))
+        );
+
+        WebElement password = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.name("password"))
+        );
+
+        username.clear();
+        password.clear();
+
+        username.sendKeys("nottest1234@email.com");
+        password.sendKeys("P@55qw0rd");
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.name("action"))
+        ).click();
+
+        wait.until(ExpectedConditions.urlContains("/posts"));
+
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/friends']"))
+        ).click();
+        wait.until(ExpectedConditions.urlContains("/friends"));
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.id("btn-incoming"))
+        ).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tab-incoming")));
+        assertTrue(driver.findElement(By.id("tab-incoming")).isDisplayed());
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.className("accept-button"))
+        ).click();
+        wait.until(ExpectedConditions.urlContains("/friends"));
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("tab-friends"))
+        ).click();
+        assertTrue(driver.findElement(By.id("tab-friends")).isDisplayed());
+    }
+
+    @Test
+    public void userTwoCanDeclineFriendRequestFromUserOneOnTheFriendsPage() {
+        driver.get("http://localhost:8081/logout");
+        WebElement username = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.name("username"))
+        );
+
+        WebElement password = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.name("password"))
+        );
+
+        username.clear();
+        password.clear();
+
+        username.sendKeys("nottest1234@email.com");
+        password.sendKeys("P@55qw0rd");
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.name("action"))
+        ).click();
+
+        wait.until(ExpectedConditions.urlContains("/posts"));
+
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/friends']"))
+        ).click();
+        wait.until(ExpectedConditions.urlContains("/friends"));
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.id("btn-incoming"))
+        ).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tab-incoming")));
+        assertTrue(driver.findElement(By.id("tab-incoming")).isDisplayed());
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.className("decline-button"))
+        ).click();
+        wait.until(ExpectedConditions.urlContains("/friends"));
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("tab-friends"))
+        ).click();
+        assertTrue(driver.findElement(By.id("tab-friends")).isDisplayed());
+    }
+
 }
