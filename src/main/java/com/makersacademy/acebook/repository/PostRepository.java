@@ -13,7 +13,7 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 
     @Query(
             value = "SELECT posts.id, posts.content, posts.image, posts.likes, posts.date_of_post, users.profile_picture, users.first_name, users.surname\n" +
-                    "FROM posts LEFT JOIN users ON posts.poster = users.id;",
+                    "FROM posts LEFT JOIN users ON posts.poster = users.id ORDER BY date_of_post DESC;",
             nativeQuery = true
     )
     Iterable<DTOPostUserJoin> postsJoin();

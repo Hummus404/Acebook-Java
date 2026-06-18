@@ -29,7 +29,10 @@
     <p><input class="input-image" type="file" name="imageFile"></p>
     <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
-
+    <div class="sorting">
+        <a href="/posts" class="sort-button">Latest</a>
+        <a href="/posts/most-liked" class="sort-button">Most Liked</a>
+    </div>
     <h2 class="timeline-heading">Timeline</h2>
 
 
@@ -49,7 +52,7 @@
             <div class="post-actions">
                 <span class="like-count" th:text="${pv.likeCount}"></span> likes
                 <form th:action="@{/posts/{id}/like(id=${pv.post.id})}" method="post">
-                    <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
+                    <button type="submit" th:utext="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
                 </form>
             </div>
 

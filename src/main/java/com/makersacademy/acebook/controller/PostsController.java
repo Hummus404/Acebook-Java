@@ -165,7 +165,36 @@ public class PostsController {
 //        return "posts/index";
 //    }
 
+    @GetMapping("/posts/most-liked")
+    public String indexMostLiked(Model model, Comment comment, HttpSession session) {
+        User me = currentUser();
+        List<PostView> postViews = new ArrayList<>();
+        for (DTOPostUserJoin post : postRepository.postsJoin()) {
+            long count = likeRepository.countByPostId(post.getId());
+            boolean liked = me != null &&
+                    likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
 
+
+            List<CommentView> commentViews = new ArrayList<>();
+            for (DTOCommentUserJoin comments : commentRepository.commentsJoin((int) (long) post.getId())) {
+                long commentCount = commentLikeRepository.countByCommentId(comments.getId());
+                boolean commentLiked = me != null &&
+                        commentLikeRepository.existsByCommentIdAndUserId(comments.getId(), me.getId());
+                commentViews.add(new CommentView(comments, commentCount, commentLiked, comments.getId()));
+            }
+
+            postViews.add(new PostView(post, count, liked, commentViews));
+        }
+        model.addAttribute("postViews", postViews);
+        model.addAttribute("post", new Post());
+//        model.addAttribute("posts", posts);
+        model.addAttribute("comment", comment);
+        model.addAttribute("commentRepository", commentRepository);
+
+        session.setAttribute("userID", me.getId());
+        postViews.sort(Comparator.comparingLong(PostView::getLikeCount).reversed());
+        return "posts/index";
+    }
 
 
 }
