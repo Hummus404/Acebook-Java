@@ -145,6 +145,28 @@ public class ProfilePageTest {
     }
 
     @Test
+    public void showNoPostsWhenUserHasNotAddedAnyPosts() {
+        String email = signUp();
+
+        Actions action = new Actions(driver);
+
+        WebElement userIcon = driver.findElement(By.className("user-menu"));
+
+        action.moveToElement(userIcon).perform();
+
+        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.className("sub-menu-link")));
+
+        profileLink.click();
+
+        wait.until(ExpectedConditions.urlContains("/profile/" + email));
+
+        List<WebElement> posts = driver.findElements(By.className("individual-post"));
+
+        assertEquals(0, posts.size());
+
+    }
+
+    @Test
     public void showOnlyLoggedInUsersPosts() {
        String email = signUp();
 
