@@ -197,7 +197,7 @@ public class SignUpController {
 
         session.setAttribute("profilePicture", newUser.get().getProfilePicture());
         session.setAttribute("userID", newUser.get().getId());
-
+        session.setAttribute("userUsername", newUser.get().getUsername());
         return new RedirectView("/posts");
     }
 
