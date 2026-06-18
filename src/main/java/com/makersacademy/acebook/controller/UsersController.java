@@ -35,6 +35,7 @@ public class UsersController {
             session.setAttribute("profilePicture", uniqueUser.get().getProfilePicture());
             session.setAttribute("userID", uniqueUser.get().getId());
             session.setAttribute("userUsername", uniqueUser.get().getUsername());
+
             return new RedirectView("/posts");
 
         }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Friends</title>
+    <link rel="stylesheet" href="/main.css" />
+</head>
+<body>
+    <div th:replace="~{posts/base :: header}"></div>
+    <h1>My Friends</h1>
+
+    <div class="tab-buttons">
+        <button onclick="showTab('friends')" id="btn-friends" class="tab-btn active">My Friends</button>
+        <button onclick="showTab('incoming')" id="btn-incoming" class="tab-btn">
+            Incoming Requests
+            <span th:if="${!incomingRequests.isEmpty()}"
+                  th:text="'(' + ${#lists.size(incomingRequests)} + ')'">
+            </span>
+        </button>
+        <button onclick="showTab('sent')" id="btn-sent" class="tab-btn">
+            Sent Requests
+            <span th:if="${!sentRequests.isEmpty()}"
+                  th:text="'(' + ${#lists.size(sentRequests)} + ')'">
+            </span>
+        </button>
+    </div>
+
+    <!-- My Friends Tab -->
+    <div id="tab-friends">
+
+        <div th:if="${friends.isEmpty()}">
+            <p>You don't have any friends yet.</p>
+        </div>
+
+        <ul>
+            <li th:each="friend : ${friends}">
+                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <span th:text="${friend.username}"></span>
+                <a th:href="@{/profile/{username}(username=${friend.username})}">View Profile</a>
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- Incoming Requests Tab -->
+    <div id="tab-incoming" style="display:none">
+
+        <div th:if="${incomingRequests.isEmpty()}">
+            <p>No incoming friend requests.</p>
+        </div>
+
+        <ul>
+            <li th:each="req : ${incomingRequests}">
+                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <span th:text="${req.requester.username}"></span>
+
+                <form th:action="@{/friends/accept/{id}(id=${req.id})}" method="post" style="display:inline">
+                    <button type="submit" class="accept-button">Accept</button>
+                </form>
+
+                <form th:action="@{/friends/decline/{id}(id=${req.id})}" method="post" style="display:inline">
+                    <button type="submit" class="decline-button">Decline</button>
+                </form>
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- Sent Requests Tab -->
+    <div id="tab-sent" style="display:none">
+
+        <div th:if="${sentRequests.isEmpty()}">
+            <p>No pending sent requests.</p>
+        </div>
+
+        <ul>
+            <li th:each="req : ${sentRequests}">
+                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <span th:text="${req.addressee.username}"></span>
+                <span>Pending...</span>
+            </li>
+        </ul>
+
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            document.getElementById('tab-friends').style.display = 'none';
+            document.getElementById('tab-incoming').style.display = 'none';
+            document.getElementById('tab-sent').style.display = 'none';
+
+            document.getElementById('btn-friends').classList.remove('active');
+            document.getElementById('btn-incoming').classList.remove('active');
+            document.getElementById('btn-sent').classList.remove('active');
+
+            document.getElementById('tab-' + tabName).style.display = 'block';
+            document.getElementById('btn-' + tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
+

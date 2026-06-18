@@ -138,7 +138,7 @@ public class ProfilePageTest {
         assertTrue(username.isDisplayed());
         assertTrue(profilePic.isDisplayed());
 
-        defaultProfilePic = "http://localhost:8081/images/defaultProfileAvatar.jpeg";
+        defaultProfilePic = "defaultProfileAvatar.jpeg";
 
         assertEquals(expectedUserName, username.getText());
         assertTrue(Objects.requireNonNull(profilePic.getAttribute("src")).contains(defaultProfilePic));

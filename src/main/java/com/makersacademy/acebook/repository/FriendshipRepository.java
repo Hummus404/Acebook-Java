@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FriendshipRepository extends CrudRepository<Friendship, Long> {
-    Optional<Friendship> findByRequestorAndAddressee(User Requestor, User Addressee);
-    List<Friendship> findByAddresseeAndStatus(User Addressee, FriendshipStatus status);
-    List<Friendship> findByRequestorAndStatus(User Requestor, FriendshipStatus status);
+    Optional<Friendship> findByRequesterAndAddressee(User me, User profileUser);
+    List<Friendship> findByAddresseeAndStatus(User addressee, FriendshipStatus status);
+    List<Friendship> findByRequesterAndStatus(User requester, FriendshipStatus status);
 }
