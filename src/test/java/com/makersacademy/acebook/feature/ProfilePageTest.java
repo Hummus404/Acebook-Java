@@ -108,7 +108,8 @@ public class ProfilePageTest {
 
         action.moveToElement(userIcon).perform();
 
-        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("profile-link")));
+//        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("profile-link")));
+        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.className("sub-menu-link")));
 
         profileLink.click();
 
