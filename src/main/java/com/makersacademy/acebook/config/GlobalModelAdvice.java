@@ -22,15 +22,20 @@ public class GlobalModelAdvice {
     }
 
     @ModelAttribute("currentProfilePicture")
-    public String currentProfilePicture(HttpSession session) {
+    public String currentProfilePicture() {
 
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
 
+
         String email = (String) principal.getAttributes().get("email");
-        User user = userRepository.findUserByEmailAddress(email).orElseThrow();
+        User user = userRepository.findUserByEmailAddress(email).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
 
         String profilePicture = user.getProfilePicture();
 
