@@ -160,11 +160,6 @@ public class SignUpController {
         Files.createDirectories(uploadDir);
 
 
-        System.out.println(image.getSize());
-
-
-
-
         if (!image.isEmpty()) {
 
 
@@ -193,8 +188,6 @@ public class SignUpController {
             user.setProfilePicture("defaultProfileAvatar.jpeg");
 
         }
-
-
 
         user.setEmailAddress(principal.getEmail());
 

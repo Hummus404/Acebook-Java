@@ -9,50 +9,100 @@
     <link rel="stylesheet" href="/main.css" />
 </head>
     <body>
+		<main class="page-shell feed-page">
+		<div th:replace="~{posts/base :: header}"></div>
 
-    <div th:replace="~{posts/base :: header}"></div>
+		<h1>Posts</h1>
 
-    <h1>Posts</h1>
+		<div sec:authorize="isAuthenticated()" id="greeting">
+			Signed in as <span sec:authentication="principal.attributes['email']"></span>
+		</div>
 
-    <div sec:authorize="isAuthenticated()" id="greeting">
-        Signed in as <span sec:authentication="principal.attributes['email']"></span>
-<!--        <form th:action="@{/logout}" method="post" style="display:inline">-->
-<!--            <button type="submit">Sign out</button>-->
-<!--        </form>
-            form commented out because th:action applied to logout in nav bar (nav bar logout button instead)-->
+
+
+<form id="post-form" action="#" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
+    <p>Content: <input class="input-content-field" type="text" th:field="*{content}" placeholder="What be on your mind? yarrrr...." /></p>
+    <p><input class="input-image" type="file" name="imageFile"></p>
+    <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+    <div class="sorting">
+        <a href="/posts" class="sort-button">Latest</a>
+        <a href="/posts/most-liked" class="sort-button">Most Liked</a>
     </div>
+    <h2 class="timeline-heading">Timeline</h2>
 
-    <form id="post-form" action="#" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
-        <p>Content: <input class="input-content-field" type="text" th:field="*{content}" /></p>
-        <p><input class="input-image" type="file" name="imageFile"></p>
-        <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-    </form>
 
-    <ul>
-        <li th:each="pv : ${postViews}">
-            <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}"
-                 th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
-            <p th:text="${pv.post.content}"></p>
-            <span class="like-count" th:text="${pv.likeCount}"></span> likes
-            <form th:action="@{/posts/{id}/like(id=${pv.post.id})}"
-                  method="post" style="display:inline">
-                <button type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
-            </form>
+    <ul class="timeline-list">
+        <li th:each="pv : ${postViews}" class="post-card">
+            <div class="post-header">
+                <div><img th:src="@{'/images/' + ${pv.post.profile_picture}}" class = "logo"/></div>
+<!--                <img th:src="@{'/images/' + ${pv.post.profile_picture}}" class="logo"/>-->
+
+                <!-- username -->
+                <p th:text = "${pv.post.first_name} + ' ' + ${pv.post.surname} + ' - ' + ${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p>
+            </div>
+
+            <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}" th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
+<!--            <p th:text = "${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p>-->
+            <div class="post-content"><p th:text="${pv.post.content}"></p></div>
+            <div class="post-actions">
+                <span class="like-count" th:text="${pv.likeCount}"></span> likes
+                <form th:action="@{/posts/{id}/like(id=${pv.post.id})}" method="post">
+                    <button type="submit" th:text="${pv.likedByMe} ? '❤️' : '🤍'">Like</button>
+                </form>
+            </div>
+
+            <div th:each = "comment : ${pv.commentView}">
+
+                <div class = "post-card">
+                    <div class = "post-header">
+
+                        <div><img th:src="@{'/images/' + ${comment.post.profile_picture}}" class = "logo"/></div>
+                        <p th:text = "${comment.post.first_name} + ' ' + ${comment.post.surname} + ' - ' + ${#dates.format(comment.post.date_of_comment, 'dd-MM-yyyy HH:MM')}"></p>
+
+                    </div>
+
+                    <p th:text = "${comment.post.getContent()}"></p>
+
+                    <div class="post-actions">
+                        <span class="like-count" th:text="${comment.likeCount}"></span> likes
+                        <form th:action="@{/posts/{id}/comment-likes(id=${comment.commentsId})}" method="post">
+                            <button type="submit" th:text="${comment.likedByMe} ? '❤️' : '🤍'">Like</button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <form id="comment-form" action="#" th:action="@{/comment/new}" th:object="${comment}" method="post">
+                    <p>Comment: <input class="input-content-field" type="text" th:field="*{content}" placeholder = "Leave a comment" /></p>
+                    <input type="hidden" name = "post" th:value = "${pv.post.id}" />
+                    <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+                </form>
+<!--                "${pv.post.id}"-->
+
+            </div>
         </li>
     </ul>
+</main>
 
-    <script>
-        const contentInput = document.querySelector(".input-content-field")
-        const imageInput = document.querySelector(".input-image")
-        const postForm = document.querySelector("#post-form")
+<script>
+    const contentInput = document.querySelector(".input-content-field")
+    const imageInput = document.querySelector(".input-image")
+    const postForm = document.querySelector("#post-form")
 
-        postForm.addEventListener("submit", (e) => {
-            if (contentInput.value.trim().length === 0 && imageInput.files.length === 0) {
-                e.preventDefault()
-                alert("Both image and content fields cannot be empty")
-            }
-        })
-    </script>
+    postForm.addEventListener("submit", (e) => {
+        if (contentInput.value.trim().length === 0 && imageInput.files.length === 0) {
+            e.preventDefault()
+            alert("Both image and content fields cannot be empty")
+        }
+    })
+</script>
 
-    </body>
+</body>
 </html>
+
+

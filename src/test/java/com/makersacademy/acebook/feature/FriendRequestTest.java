@@ -1,8 +1,7 @@
 package com.makersacademy.acebook.feature;
 
 import com.github.javafaker.Faker;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,6 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
 public class FriendRequestTest {
 
@@ -56,10 +57,10 @@ public class FriendRequestTest {
 
     }
 
-//    @AfterEach
-//    public void tearDown() {
-//        driver.close();
-//    }
+    @AfterEach
+    public void tearDown() {
+        driver.close();
+    }
 
     @Test
     public void userVisitsFriendsBarAndReturnsFriendsPage(){
@@ -100,7 +101,8 @@ public class FriendRequestTest {
     }
 
     @Test
-    public void userOneCanSendFriendRequestFromUserTwosProfile() {
+    @Order(1)
+    public void userOneCanSendFriendRequestFromUserTwosProfileForAccepting() {
         driver.get("http://localhost:8081/profile/adrian_woz_not_here");
         wait.until(
                 ExpectedConditions.elementToBeClickable(By.cssSelector(".profile-actions button[type='submit']"))
@@ -108,6 +110,7 @@ public class FriendRequestTest {
         wait.until(
                 ExpectedConditions.urlContains("/profile/adrian_woz_not_here")
         );
+
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-actions button:disabled"))
         );
@@ -115,6 +118,7 @@ public class FriendRequestTest {
     }
 
     @Test
+    @Order(2)
     public void userTwoCanAcceptFriendRequestFromUserOneOnTheFriendsPage() {
         driver.get("http://localhost:8081/logout");
         WebElement username = wait.until(
@@ -160,6 +164,24 @@ public class FriendRequestTest {
     }
 
     @Test
+    @Order(3)
+    public void userOneCanSendFriendRequestFromUserTwosProfileForDeclining() {
+        driver.get("http://localhost:8081/profile/hiratest");
+        wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector(".profile-actions button[type='submit']"))
+        ).click();
+        wait.until(
+                ExpectedConditions.urlContains("/profile/hiratest")
+        );
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-actions button:disabled"))
+        );
+        assertTrue(driver.findElement(By.cssSelector(".profile-actions button:disabled")).isDisplayed());
+    }
+
+    @Test
+    @Order(4)
     public void userTwoCanDeclineFriendRequestFromUserOneOnTheFriendsPage() {
         driver.get("http://localhost:8081/logout");
         WebElement username = wait.until(
@@ -173,8 +195,8 @@ public class FriendRequestTest {
         username.clear();
         password.clear();
 
-        username.sendKeys("nottest1234@email.com");
-        password.sendKeys("P@55qw0rd");
+        username.sendKeys("hiratest1234@email.com");
+        password.sendKeys("Password123!");
         wait.until(
                 ExpectedConditions.elementToBeClickable(By.name("action"))
         ).click();

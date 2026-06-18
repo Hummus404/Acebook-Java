@@ -18,9 +18,6 @@ public class UsersController {
 
     @GetMapping("/users/after-login")
     public RedirectView afterLogin(HttpSession session) {
-
-        System.out.println("here6______");
-
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -40,6 +37,7 @@ public class UsersController {
             session.setAttribute("userUsername", uniqueUser.get().getUsername());
 
             return new RedirectView("/posts");
+
         }
         else{
             return new RedirectView("/sign_up");

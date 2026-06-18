@@ -30,14 +30,11 @@ public class User {
     private String blocked;
 
 
-
-
-
-
     public User(String username) {
         this.username = username;
         this.enabled = TRUE;
     }
+
 
     public User(String username, boolean enabled, String profilePicture,String first_name, String surname, String emailAddress, String friends, String blocked) {
         this.username = username;

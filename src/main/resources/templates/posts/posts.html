@@ -1,55 +1,94 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head lang="en">
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Acebook</title>
-    <link rel="stylesheet" href="/main.css" />
-<!--    <style>-->
-<!--        .post-main {-->
-<!--            gap: 16px;-->
-<!--            background: #ffffff;-->
-<!--            border: 1px solid #e5e7eb;-->
-<!--            border-radius: 16px;-->
-<!--            padding: 16px;-->
-<!--            margin-bottom: 16px;-->
-<!--            max-width: 600px;-->
-<!--        }-->
-<!--        .avatar-circle {-->
-<!--            width: 50px;-->
-<!--            height: 50px;-->
-<!--            border-radius: 50%;-->
-<!--            object-fit: cover;-->
-<!--            background-color: #e5e7eb;-->
-<!--            border: 1px solid #d1d5db;-->
-<!--        }-->
-<!--        .post-content {-->
-<!--            font-size: 14px;-->
-<!--            color: #374151;-->
-<!--            line-height: 1.5;-->
-<!--            padding-top: 4px;-->
-<!--        }-->
-<!--    </style>-->
+    <link rel="stylesheet" href="/main.css"/>
 </head>
+
 <body style="background-color: #f9fafb; padding: 24px;">
 
-<h2>My Feed</h2>
+<div th:replace="~{posts/base :: header}"></div>
 
-<div th:each="post : ${posts}" class="post-container">
+<h1>Posts</h1>
 
-    <div class="author-sidebar">
-        <img th:src="${post.profilePictureUrl != null} ? ${post.profilePictureUrl} : '/static/default-avatar.png'"
-             th:alt="${post.username} + ' profile photo'"
-             class="avatar-circle" />
-
-        <span th:text="${post.username}" class="username-label">Username</span>
-    </div>
-
-    <div class="post-content">
-        <p th:text="${post.content}"></p>
-    </div>
-
+<!-- LOGIN / LOGOUT -->
+<div sec:authorize="isAuthenticated()" id="greeting">
+    Signed in as <span sec:authentication="principal.attributes['email']"></span>
+    <form th:action="@{/logout}" method="post" style="display:inline">
+        <button type="submit">Sign out</button>
+    </form>
 </div>
+
+<sec:authorize access="!isAuthenticated()">
+    <a href="/oauth2/authorization/okta">Sign in</a>
+</sec:authorize>
+
+<!-- POST CREATION FORM -->
+<sec:authorize access="isAuthenticated()">
+    <form id="post-form" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
+        <p>Content: <input class="input-content-field" type="text" th:field="*{content}" /></p>
+        <p><input class="input-image" type="file" name="imageFile"></p>
+        <p>
+            <input class="submit-btn" type="submit" value="Submit" />
+            <input type="reset" value="Reset" />
+        </p>
+    </form>
+</sec:authorize>
+
+<!-- SORTING BUTTONS -->
+<div class="sorting">
+    <a href="/posts" class="sort-button">Latest</a>
+    <a href="/posts/most-liked" class="sort-button">Most Liked</a>
+</div>
+
+<h2 class="timeline-heading">Timeline</h2>
+
+<!-- FEED -->
+<ul class="timeline-list">
+    <li th:each="pv : ${postViews}" class="post-card">
+
+        <div class="post-header">
+            <div class="post-avatar" aria-hidden="true">A</div>
+        </div>
+
+        <!-- IMAGE -->
+        <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}"
+             th:src="@{'/images/' + ${pv.post.image}}"/>
+
+        <!-- CONTENT -->
+        <div class="post-content">
+            <p th:text="${pv.post.content}"></p>
+        </div>
+
+        <!-- LIKE SECTION -->
+        <div class="post-actions">
+            <span class="like-count" th:text="${pv.likeCount}"></span> likes
+
+            <form th:action="@{/posts/{id}/like(id=${pv.post.id})}" method="post">
+                <button type="submit" class="heart-btn"
+                        th:text="${pv.likedByMe} ? '❤️' : '🤍'"></button>
+            </form>
+        </div>
+
+    </li>
+</ul>
+
+<script>
+    const contentInput = document.querySelector(".input-content-field")
+    const imageInput = document.querySelector(".input-image")
+    const postForm = document.querySelector("#post-form")
+
+    postForm.addEventListener("submit", (e) => {
+        if (contentInput.value.trim().length === 0 && imageInput.files.length === 0) {
+            e.preventDefault()
+            alert("Both image and content fields cannot be empty")
+        }
+    })
+</script>
 
 </body>
 </html>

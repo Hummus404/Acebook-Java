@@ -22,6 +22,7 @@ import java.util.Optional;
 public class ProfileController {
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private PostRepository postRepository;
 
@@ -39,6 +40,8 @@ public class ProfileController {
     public String showUserProfile(@PathVariable String username, Model model) {
         User me = currentUser();
         User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        model.addAttribute("user", user);
+
         List<Post> posts = postRepository.findByPosterOrderByDateOfPostDesc(user.getId().intValue());
 
         model.addAttribute("user", user);
