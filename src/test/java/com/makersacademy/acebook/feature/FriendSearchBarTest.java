@@ -82,7 +82,7 @@ public class FriendSearchBarTest {
     public void searchForExistingUserReturnsExistingUserOnResultsPAge() {
         driver.get("http://localhost:8081/posts");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userSearch")));
-        String searchText = "Umut";
+        String searchText = "Adrian";
         driver.findElement(By.name("userSearch")).sendKeys(searchText);
         driver.findElement(By.className("search-btn")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("name-tag")));
