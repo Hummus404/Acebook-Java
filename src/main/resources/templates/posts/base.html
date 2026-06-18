@@ -24,14 +24,14 @@
 				</form>
 				<!--	THIS IS MY SEARCH BAR AND BUTTON DO NOT KILL IT PLEASE-->
 				<div class="user-menu">
-					<img th:src="${currentProfilePicture != null ? 'images/' + currentProfilePicture : 'images/defaultProfileAvatar.jpeg'}"
+					<img th:src="${currentProfilePicture != null ? '/images/' + currentProfilePicture : '/images/defaultProfileAvatar.jpeg'}"
 					     class="user-img"
 					     alt="Nav Profile Picture" />
 
 					<div class="sub-menu-wrap" id="subMenu">
 						<div class="sub-menu">
 							<div class="user-info">
-								<img th:src="${currentProfilePicture != null ? 'images/' + currentProfilePicture : 'images/defaultProfileAvatar.jpeg'}"
+								<img th:src="${currentProfilePicture != null ? '/images/' + currentProfilePicture : '/images/defaultProfileAvatar.jpeg'}"
 								     class="user-img"
 								     alt="Profile Picture" />
 								<p th:text="${currentUsername}"></p>
