@@ -70,7 +70,7 @@
 
             <form th:action="@{/posts/{id}/like(id=${pv.post.id})}" method="post">
                 <button type="submit" class="heart-btn"
-                        th:utext="${pv.likedByMe} ? '❤️' : '🤍'"></button>
+                        th:text="${pv.likedByMe} ? '❤️' : '🤍'"></button>
             </form>
         </div>
 
