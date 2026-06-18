@@ -21,3 +21,4 @@ public class GlobalModelAdvice {
         return (String) session.getAttribute("userUsername");
     }
 }
+
