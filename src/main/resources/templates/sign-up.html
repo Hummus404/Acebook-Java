@@ -1,31 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-            xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
-    <head>
-        <meta charset="UTF-8">
-        <title>Sign up</title>
-        <link rel="stylesheet" href="/main.css" />
-    </head>
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+</head>
 
-    <body>
-    <span th:if="${usernameBlank}">Username cannot be empty</span>
-    <span th:if="${uniqueUserBool}" th:text="'Username ' + ${chosenUsername} + ' has been taken'"></span>
-    <span th:if="${noFirstName}">First name cannot be blank</span>
-    <span th:if="${noSurname}">Surname cannot be blank</span>
-    <span th:if="${imageSize}">Image size must be less than 10Mb</span>
-    <span th:if="${bothNamesBlank}">Both names must be provided</span>
-    <form th:action="@{/sign_up/new}" th:object="${sign_up}" method="post" enctype="multipart/form-data" >
-        <label th:for="username">Username:</label>
-        <input id="username-input" type="text" placeholder="Choose a username" th:field="*{username}"/> <br>
-        <label th:for="first_name">First Name:</label>
-        <input id="first-name-input" type="text" th:placeholder="${firstName}" th:field="*{first_name}"/> <br>
-        <label th:for="surname">Surname:</label>
-        <input id="surname-input" type="text" th:placeholder="${surname}" th:field="*{surname}"/> <br>
-        <label>Upload a profile picture</label>
-        <input type="file" name="profile_picture" accept = "image/png, image/jpeg, image/jpg"><br>
-        <input id="submit-btn" type="submit" value="Submit"/>
-        <input type="reset" value="Reset" />
-    </form>
+    <body class="hero auth-page">
+
+    <!-- potential future nav -->
+
+    <img class="logo" th:src="@{/images/acebook_logo.png}" alt="Acebook"/>
+
+    <div class="card auth-card">
+        <h1>Sign up</h1>
+        <div class="auth-errors">
+            <span class="auth-error" th:if="${usernameBlank}">Username cannot be empty</span>
+            <span class="auth-error" th:if="${uniqueUserBool}"
+                  th:text="'Username ' + ${chosenUsername} + ' has been taken'"></span>
+            <span class="auth-error" th:if="${noFirstName}">First name cannot be blank</span>
+            <span class="auth-error" th:if="${noSurname}">Surname cannot be blank</span>
+            <span class="auth-error" th:if="${imageSize}">Image size must be less than 10Mb</span>
+            <span class="auth-error" th:if="${bothNamesBlank}">Both names must be provided</span>
+        </div>
+
+        <form th:action="@{/sign_up/new}" th:object="${sign_up}"
+              method="post" enctype="multipart/form-data">
+
+            <div class="form-field">
+                <label for="username-input">Username</label>
+                <input id="username-input" class="input" type="text"
+                       placeholder="Choose a username" th:field="*{username}" oninput="this.value = this.value.replace(/\s/g, '')"/> <br>
+            </div>
+
+            <div class="form-field">
+                <label for="first-name-input">First name</label>
+                <input id="first-name-input" class="input" type="text"
+                       th:placeholder="${firstName}" th:field="*{first_name}"/>
+            </div>
+
+            <div class="form-field">
+                <label for="surname-input">Surname</label>
+                <input id="surname-input" class="input" type="text"
+                       th:placeholder="${surname}" th:field="*{surname}"/>
+            </div>
+
+            <div class="form-field">
+                <label for="profile-picture-input">Upload a profile picture</label>
+                <input id="profile-picture-input" class="input" type="file" name="profile_picture"
+                       accept="image/png, image/jpeg, image/jpg"/>
+            </div>
+
+            <div class="auth-actions">
+                <input id="submit-btn" class="btn" type="submit" value="Submit"/>
+                <input class="btn--secondary" type="reset" value="Reset"/>
+            </div>
+        </form>
+    </div>
 
     </body>
 </html>
