@@ -15,7 +15,7 @@
         </section>
 
         <section>
-            <div th:each="post : ${posts}">
+            <div class="individual-post" th:each="post : ${posts}">
                 <img th:src="@{/images/{file}(file=${post.image})}" alt="">
                 <p th:text="${post.content}"></p>
             </div>

@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +39,7 @@ public class ProfilePageTest {
         driver.findElement(By.name("action")).click();
 
         driver.findElement(By.id("username-input")).sendKeys(email);
-        driver.findElement(By.id("first-name-input")).sendKeys("Random");
+        driver.findElement(By.id("first-name-input")).sendKeys("random");
         driver.findElement(By.id("surname-input")).sendKeys("user");
         driver.findElement(By.id("submit-btn")).click();
 
@@ -84,10 +85,6 @@ public class ProfilePageTest {
 
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-
-
-
-
     }
 
     @AfterEach
@@ -108,7 +105,6 @@ public class ProfilePageTest {
 
         action.moveToElement(userIcon).perform();
 
-//        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("profile-link")));
         WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.className("sub-menu-link")));
 
         profileLink.click();
@@ -130,7 +126,7 @@ public class ProfilePageTest {
 
         action.moveToElement(userIcon).perform();
 
-        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("profile-link")));
+        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.className("sub-menu-link")));
 
         profileLink.click();
 
@@ -151,6 +147,49 @@ public class ProfilePageTest {
     @Test
     public void showOnlyLoggedInUsersPosts() {
        String email = signUp();
+
+        String dummyInputText_1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+
+        Path imagePath = Paths.get(
+                System.getProperty("user.dir"),
+                "src",
+                "test",
+                "resources",
+                "images",
+                "test-image.jpg"
+        );
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.name("imageFile")
+                )
+        );
+
+        driver.findElement(By.name("imageFile"))
+                .sendKeys(imagePath.toString());
+        driver.findElement(By.className("input-content-field")).sendKeys(dummyInputText_1);
+        int before = driver.findElements(By.cssSelector("li img")).size();
+        driver.findElement(By.className("submit-btn")).click();
+
+        wait.until(driver ->
+                driver.findElements(By.cssSelector("li img")).size() > before
+        );
+
+        Actions action = new Actions(driver);
+
+        WebElement userIcon = driver.findElement(By.className("user-menu"));
+
+        action.moveToElement(userIcon).perform();
+
+        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.className("sub-menu-link")));
+
+        profileLink.click();
+
+        wait.until(ExpectedConditions.urlContains("/profile/" + email));
+
+        List<WebElement> posts = driver.findElements(By.className("individual-post"));
+
+        assertEquals(1, posts.size());
 
     }
 }
