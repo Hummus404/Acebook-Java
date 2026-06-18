@@ -23,6 +23,12 @@
       </a>
       <p th:text="'Name: ' + ${user.first_name} + ' ' + ${user.surname}"></p>
     </div>
+    <div>
+<!--      th:if="${friendshipStatus == 'NONE'}"-->
+      <form th:action="@{/friends/request/{id}(id=${user.id})}" method="post">
+        <button type="submit">Add Friend</button>
+      </form>
+    </div>
   </li>
 </ul>
 <div th:if="${searchResults == null or searchResults.isEmpty()}">
