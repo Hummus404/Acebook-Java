@@ -12,7 +12,7 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     List<Post> findAllByOrderByDateOfPostDesc();
 
     @Query(
-            value = "SELECT posts.id, posts.content, posts.image, posts.likes, posts.date_of_post, users.profile_picture, users.first_name, users.surname\n" +
+            value = "SELECT posts.id, posts.content, posts.image, posts.likes, posts.date_of_post, users.profile_picture, users.first_name, users.surname, users.username\n" +
                     "FROM posts LEFT JOIN users ON posts.poster = users.id ORDER BY date_of_post DESC;",
             nativeQuery = true
     )

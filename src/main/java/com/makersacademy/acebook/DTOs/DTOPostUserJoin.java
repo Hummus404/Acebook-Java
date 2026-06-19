@@ -16,8 +16,9 @@ public class DTOPostUserJoin {
     private String profile_picture;
     private String first_name;
     private String surname;
+    private String username;
 
-    public DTOPostUserJoin(Long id, String content, String image, Integer likes, Timestamp date_of_post, String profile_picture, String first_name, String surname){
+    public DTOPostUserJoin(Long id, String content, String image, Integer likes, Timestamp date_of_post, String profile_picture, String first_name, String surname, String username){
         this.id = id;
         this.content = content;
         this.image = image;
@@ -26,6 +27,7 @@ public class DTOPostUserJoin {
         this.profile_picture = profile_picture;
         this.first_name = first_name;
         this.surname=surname;
+        this.username=username;
     }
 
 }
