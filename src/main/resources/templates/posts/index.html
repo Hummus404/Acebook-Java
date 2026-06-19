@@ -47,7 +47,7 @@
             <div class="post-actions">
                 <span class="like-count" th:text="${pv.likeCount}"></span> likes
                 <form th:action="@{/posts/{id}/like(id=${pv.post.id})}" method="post">
-                    <button id="like-status" type="submit" th:text="${pv.likedByMe} ? 'Unlike' : 'Like'">Like</button>
+                    <button id="like-status" type="submit" th:text="${pv.likedByMe} ? '❤️' : '🤍'">Like</button>
                 </form>
             </div>
 
