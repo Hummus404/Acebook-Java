@@ -36,8 +36,11 @@
         </div>
 
         <ul class="timeline-list">
-            <li th:each="friend : ${friends}" class="card friend-row">
-                <img class="avatar" th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+            <li class="card friend-row" th:each="friend : ${friends}">
+                <img th:src="${friend.getProfilePicture() != null ? '/images/' + friend.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                     class="avatar"
+                     alt="Profile Picture"
+                     width="40"/>
                 <span class="user-chip__name" th:text="${friend.username}"></span>
                 <a th:href="@{/profile/{username}(username=${friend.username})}">View Profile</a>
             </li>
@@ -53,8 +56,12 @@
         </div>
 
         <ul class="timeline-list">
-            <li th:each="req : ${incomingRequests}" class="card friend-row">
-                <img class="avatar" th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+            <li class="card friend-row" th:each="req : ${incomingRequests}">
+                <img th:src="${req.requester.getProfilePicture() != null ? '/images/' + req.requester.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                     class="avatar"
+                     alt="Profile Picture"
+                     width="40"/>
+
                 <span class="user-chip__name" th:text="${req.requester.username}"></span>
 
                 <form th:action="@{/friends/accept/{id}(id=${req.id})}" method="post" style="display:inline">
@@ -78,7 +85,10 @@
 
         <ul class="timeline-list">
             <li th:each="req : ${sentRequests}" class="card friend-row">
-                <img class="avatar" th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <img th:src="${req.addressee.getProfilePicture() != null ? '/images/' + req.addressee.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                     class="avatar"
+                     alt="Profile Picture"
+                     width="40"/>
                 <span class="user-chip__name" th:text="${req.addressee.username}"></span>
                 <span>Pending...</span>
             </li>
