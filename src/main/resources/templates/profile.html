@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css" />
+</head>
+<body>
+    <div th:replace="~{posts/base :: header}"></div>
+        <h1>Profile</h1>
+        <section>
+            <img id="profile-pic" th:src="@{/images/{file}(file=${user.profilePicture})}" alt="user-img">
+            <p id="username-text" th:text="${user.username}"></p>
+        </section>
+
+        <section>
+            <div class="individual-post" th:each="post : ${posts}">
+                <img th:src="@{/images/{file}(file=${post.image})}" alt="">
+                <p th:text="${post.content}"></p>
+            </div>
+        </section>
+    <section>
+        <div th:each="post : ${posts}">
+            <p th:text="${post.content}"></p>
+        </div>
+    </section>
+
+    <div class="profile-actions" th:unless="${isOwnProfile}">
+
+        <!-- CASE 1: No relationship exists yet -> SHOW REQUEST BUTTON -->
+        <div th:if="${friendshipStatus == 'NONE'}">
+            <form th:action="@{/friends/request/{id}(id=${user.id})}" method="post">
+                <button type="submit">Add Friend</button>
+            </form>
+        </div>
+
+        <!-- CASE 2: Current user sent a request and it is pending -->
+        <div th:if="${friendshipStatus == 'PENDING'}">
+            <button disabled>Friend Request Sent</button>
+        </div>
+
+        <!-- CASE 3: Profile owner sent a request to the current user -->
+        <div th:if="${friendshipStatus == 'INCOMING_PENDING'}">
+            <p>This user sent you a friend request!</p>
+            <form th:action="@{/friends/accept/{id}(id=${friendshipId})}" method="post">
+                <button type="submit">Accept</button>
+            </form>
+            <form th:action="@{/friends/decline/{id}(id=${friendshipId})}" method="post">
+                <button type="submit">Decline</button>
+            </form>
+        </div>
+
+        <!-- CASE 4: Users are already friends -->
+        <div th:if="${friendshipStatus == 'ACCEPTED' or friendshipStatus == 'INCOMING_ACCEPTED'}">
+            <span>✓ Friends</span>
+        </div>
+
+<!--        <div th:if="${!isOwnProfile and !isFriend and friendshipStatus != 'INCOMING_PENDING'}">-->
+<!--            <p>Add <span th:text="${user.first_name}"></span> as a friend to see their full profile.</p>-->
+<!--        </div>-->
+
+    </div>
+
+</body>
+</html>

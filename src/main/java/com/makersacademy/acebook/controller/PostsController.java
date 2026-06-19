@@ -1,12 +1,10 @@
 package com.makersacademy.acebook.controller;
 
-import com.makersacademy.acebook.model.Like;
-import com.makersacademy.acebook.model.Post;
-import com.makersacademy.acebook.model.PostView;
-import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.repository.LikeRepository;
-import com.makersacademy.acebook.repository.PostRepository;
-import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.DTOs.DTOCommentUserJoin;
+import com.makersacademy.acebook.DTOs.DTOPostUserJoin;
+import com.makersacademy.acebook.model.*;
+import com.makersacademy.acebook.repository.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -24,19 +22,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
 public class PostsController {
 
     @Autowired
-    PostRepository repository;
+    PostRepository postRepository;
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     LikeRepository likeRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
+    CommentLikeRepository commentLikeRepository;
 
     private User currentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -46,24 +51,39 @@ public class PostsController {
     }
 
     @GetMapping("/posts")
-    public String index(Model model) {
-        Iterable<Post> posts = repository.findAllByOrderByDateOfPostDesc();
+    public String index(Model model, Comment comment, HttpSession session) {
+        Iterable<Post> posts = postRepository.findAllByOrderByDateOfPostDesc();
         User me = currentUser();
         List<PostView> postViews = new ArrayList<>();
-        for (Post post : repository.findAll()) {
+        for (DTOPostUserJoin post : postRepository.postsJoin()) {
             long count = likeRepository.countByPostId(post.getId());
             boolean liked = me != null &&
                     likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
-            postViews.add(new PostView(post, count, liked));
+
+
+            List<CommentView> commentViews = new ArrayList<>();
+            for (DTOCommentUserJoin comments : commentRepository.commentsJoin((int) (long) post.getId())) {
+                long commentCount = commentLikeRepository.countByCommentId(comments.getId());
+                boolean commentLiked = me != null &&
+                        commentLikeRepository.existsByCommentIdAndUserId(comments.getId(), me.getId());
+                commentViews.add(new CommentView(comments, commentCount, commentLiked, comments.getId()));
+            }
+
+            postViews.add(new PostView(post, count, liked, commentViews));
         }
         model.addAttribute("postViews", postViews);
         model.addAttribute("post", new Post());
         model.addAttribute("posts", posts);
+        model.addAttribute("comment", comment);
+        model.addAttribute("commentRepository", commentRepository);
+
+        session.setAttribute("userID", me.getId());
+
         return "posts/index";
     }
 
     @PostMapping("/posts/new")
-    public RedirectView create(@ModelAttribute Post post, @RequestParam("imageFile") MultipartFile image) throws IOException {
+    public RedirectView create(@ModelAttribute Post post, @RequestParam("imageFile") MultipartFile image, HttpSession session) throws IOException {
 
         // Could implement a try catch block at a later point
 
@@ -80,8 +100,25 @@ public class PostsController {
             );
             post.setImage(filename);
         }
+//        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//
+//        String emailAddress = (String) principal.getAttributes().get("email");
+//
+//        User user = userRepository.findUserByEmailAddress(emailAddress)
+//                .orElseThrow();
+//
+//        Integer userId = user.getId().intValue();
+//
+//        post.setPoster(userId);
 
-        repository.save(post);
+
+        post.setPoster((int) (long) session.getAttribute("userID"));
+        post.setDateOfPost(LocalDateTime.now());
+
+        postRepository.save(post);
 
         return new RedirectView("/posts");
 
@@ -91,18 +128,15 @@ public class PostsController {
     @PostMapping("/posts")
     public RedirectView create(@ModelAttribute Post post) {
         post.setDateOfPost(LocalDateTime.now());
-        repository.save(post);
+        postRepository.save(post);
         return new RedirectView("/posts");
     }
 
     @PostMapping("/posts/{id}/like")
     public RedirectView like(@PathVariable Long id) {
-        System.out.println("Hello K");
         User me = currentUser();
-        System.out.println("Hello A");
 
         if (me != null) {
-            System.out.println("Hello B");
 
             likeRepository.findByPostIdAndUserId(id, me.getId()).ifPresentOrElse(
                     likeRepository::delete,
@@ -111,9 +145,56 @@ public class PostsController {
                     // not yet -> like
             );
         }
-        System.out.println("Hello C");
 
         return new RedirectView("/posts");
     }
+
+//    @GetMapping("/posts/most-liked")
+//    public String mostLiked(Model model) {
+//        User me = currentUser();
+//        List<PostView> postViews = new ArrayList<>();
+//        for (Post post : postRepository.findAll()) {
+//            long likeCount = likeRepository.countByPostId(post.getId());
+//            boolean likedByMe = me != null &&
+//                    likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
+//            postViews.add(new PostView(post, likeCount, likedByMe));
+//        }
+//        postViews.sort(Comparator.comparingLong(PostView::getLikeCount).reversed());
+//        model.addAttribute("postViews", postViews);
+//        model.addAttribute("post", new Post());
+//        return "posts/index";
+//    }
+
+    @GetMapping("/posts/most-liked")
+    public String indexMostLiked(Model model, Comment comment, HttpSession session) {
+        User me = currentUser();
+        List<PostView> postViews = new ArrayList<>();
+        for (DTOPostUserJoin post : postRepository.postsJoin()) {
+            long count = likeRepository.countByPostId(post.getId());
+            boolean liked = me != null &&
+                    likeRepository.existsByPostIdAndUserId(post.getId(), me.getId());
+
+
+            List<CommentView> commentViews = new ArrayList<>();
+            for (DTOCommentUserJoin comments : commentRepository.commentsJoin((int) (long) post.getId())) {
+                long commentCount = commentLikeRepository.countByCommentId(comments.getId());
+                boolean commentLiked = me != null &&
+                        commentLikeRepository.existsByCommentIdAndUserId(comments.getId(), me.getId());
+                commentViews.add(new CommentView(comments, commentCount, commentLiked, comments.getId()));
+            }
+
+            postViews.add(new PostView(post, count, liked, commentViews));
+        }
+        model.addAttribute("postViews", postViews);
+        model.addAttribute("post", new Post());
+//        model.addAttribute("posts", posts);
+        model.addAttribute("comment", comment);
+        model.addAttribute("commentRepository", commentRepository);
+
+        session.setAttribute("userID", me.getId());
+        postViews.sort(Comparator.comparingLong(PostView::getLikeCount).reversed());
+        return "posts/index";
+    }
+
 
 }

@@ -48,9 +48,6 @@ public class SignUpTest {
         driver.findElement(By.id("surname-input")).sendKeys("user");
         driver.findElement(By.id("submit-btn")).click();
 
-
-
-
         wait.until(driver -> driver.findElement(By.id("greeting")));
         String greetingText = driver.findElement(By.id("greeting")).getText();
         assertTrue(greetingText.startsWith("Signed in as " + email));
