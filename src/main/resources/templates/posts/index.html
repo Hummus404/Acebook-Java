@@ -53,7 +53,7 @@
 
             <div th:each = "comment : ${pv.commentView}">
 
-                <div class = "post-card">
+                <div class = "post-card" style="background-color: #f5f5f5;">
                     <div class = "post-header">
 
                         <div><img th:src="@{'/images/' + ${comment.post.profile_picture}}" class = "logo"/></div>
