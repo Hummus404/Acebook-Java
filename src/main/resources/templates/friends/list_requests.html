@@ -56,7 +56,7 @@
 
         <ul>
             <li th:each="req : ${incomingRequests}">
-                <img th:src="${req.getProfilePicture() != null ? '/images/' + req.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                <img th:src="${req.requester.getProfilePicture() != null ? '/images/' + req.requester.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
                      class="user-img"
                      alt="Profile Picture"
                      width="40"/>
@@ -84,7 +84,7 @@
 
         <ul>
             <li th:each="req : ${sentRequests}">
-                <img th:src="${req.getProfilePicture() != null ? '/images/' + req.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                <img th:src="${req.addressee.getProfilePicture() != null ? '/images/' + req.addressee.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
                      class="user-img"
                      alt="Profile Picture"
                      width="40"/>
