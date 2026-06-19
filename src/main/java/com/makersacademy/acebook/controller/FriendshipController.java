@@ -31,7 +31,7 @@ public class FriendshipController {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof DefaultOidcUser oidc)) return null;
         String email = (String) oidc.getAttributes().get("email");
-        return userRepository.findUserByUsername(email).orElse(null);
+        return userRepository.findUserByEmailAddress(email).orElse(null);
     }
 
     @PostMapping("/request/{addresseeId}")
@@ -39,17 +39,17 @@ public class FriendshipController {
         User requestor = currentUser();
         User addressee = userRepository.findById(addresseeId).orElseThrow();
         boolean alreadyExists = friendshipRepository
-                .findByRequestorAndAddressee(requestor, addressee)
+                .findByRequesterAndAddressee(requestor, addressee)
                 .isPresent();
         if (!alreadyExists) {
             Friendship friendship = new Friendship();
-            friendship.setRequestor(requestor);
+            friendship.setRequester(requestor);
             friendship.setAddressee(addressee);
             friendship.setStatus(FriendshipStatus.PENDING);
             friendship.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendship);
         }
-        return "redirect:/users/" + addresseeId;
+        return "redirect:/profile/" + addressee.getUsername();
     }
 
     @PostMapping("/accept/{friendshipId}")
@@ -57,7 +57,7 @@ public class FriendshipController {
         Friendship friendship = friendshipRepository.findById(friendshipId).orElseThrow();
         friendship.setStatus(FriendshipStatus.ACCEPTED);
         friendshipRepository.save(friendship);
-        return "redirect:/users/requests";
+        return "redirect:/friends";
     }
 
     @PostMapping("/decline/{friendshipId}")
@@ -65,29 +65,38 @@ public class FriendshipController {
         Friendship f = friendshipRepository.findById(friendshipId).orElseThrow();
         f.setStatus(FriendshipStatus.DECLINED);
         friendshipRepository.save(f);
-        return "redirect:/friends/requests";
+        return "redirect:/friends";
     }
 
-    @GetMapping("/requests")
-    public String viewRequests(Model model) {
-        User me = currentUser();
-        model.addAttribute("pendingRequests",
-                friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.PENDING));
-        return "friends/requests";
-    }
+//    @GetMapping("/requests")
+//    public String viewRequests(Model model) {
+//        User me = currentUser();
+//        model.addAttribute("pendingRequests",
+//                friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.PENDING));
+//        return "friends/requests";
+//    }
 
     @GetMapping
     public String viewFriends(Model model) {
         User me = currentUser();
 
-        List<Friendship> sent = friendshipRepository.findByRequestorAndStatus(me, FriendshipStatus.ACCEPTED);
+        // 1. Incoming requests: Sent to me, waiting for my response
+        List<Friendship> incomingRequests = friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.PENDING);
+
+        // 2. Outgoing requests: Sent by me, waiting for their response
+        List<Friendship> sentRequests = friendshipRepository.findByRequesterAndStatus(me, FriendshipStatus.PENDING);
+
+        // 3. Accepted friends
+        List<Friendship> sent = friendshipRepository.findByRequesterAndStatus(me, FriendshipStatus.ACCEPTED);
         List<Friendship> received = friendshipRepository.findByAddresseeAndStatus(me, FriendshipStatus.ACCEPTED);
 
         List<User> friends = new ArrayList<>();
         sent.forEach(friendship -> friends.add(friendship.getAddressee()));
-        received.forEach(friendship -> friends.add(friendship.getRequestor()));
+        received.forEach(friendship -> friends.add(friendship.getRequester()));
 
+        model.addAttribute("incomingRequests", incomingRequests);
+        model.addAttribute("sentRequests", sentRequests);
         model.addAttribute("friends", friends);
-        return "friends/list";
+        return "friends/list_requests";
     }
 }

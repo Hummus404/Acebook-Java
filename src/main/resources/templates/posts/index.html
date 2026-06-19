@@ -8,20 +8,15 @@
     <title>Acebook</title>
     <link rel="stylesheet" href="/main.css" />
 </head>
-<body>
-<main class="page-shell feed-page">
-<h1>Posts</h1>
-  
-   <div th:replace="~{posts/base :: header}"></div>
+    <body>
+		<main class="page-shell feed-page">
+		<div th:replace="~{posts/base :: header}"></div>
 
+		<h1>Posts</h1>
 
-<div sec:authorize="isAuthenticated()" id="greeting">
-    Signed in as <span sec:authentication="principal.attributes['email']"></span>
-    <form th:action="@{/logout}" method="post" style="display:inline">
-        <button type="submit">Sign out</button>
-    </form>
-</div>
-
+		<div sec:authorize="isAuthenticated()" id="greeting">
+			Signed in as <span sec:authentication="principal.attributes['email']"></span>
+		</div>
 
 
 <form id="post-form" action="#" th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
@@ -108,19 +103,3 @@
 
 </body>
 </html>
-
-
-<!--            <div th:each = "comment : ${commentRepository.findAllByPost(${pv.post.id})}">-->
-
-
-
-
-
-
-
-
-<!--            <div th:each = "comment : ${commentRepository.findAllByPost({pv.post.id})}">-->
-
-
-
-
