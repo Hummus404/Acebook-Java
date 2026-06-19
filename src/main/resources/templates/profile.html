@@ -17,14 +17,16 @@
         <section>
             <div class="individual-post" th:each="post : ${posts}">
                 <img th:src="@{/images/{file}(file=${post.image})}" alt="">
-                <p th:text="${post.content}"></p>
+                <p th:text="${#temporals.format(post.getDateOfPost(), 'dd-MM-yyyy HH:MM')}"></p>
+                <p th:text="${post.getContent()}"></p>
+
             </div>
         </section>
-    <section>
-        <div th:each="post : ${posts}">
-            <p th:text="${post.content}"></p>
-        </div>
-    </section>
+<!--    <section>-->
+<!--        <div th:each="post : ${posts}">-->
+<!--            <p th:text="${post.content}"></p>-->
+<!--        </div>-->
+<!--    </section>-->
 
     <div class="profile-actions" th:unless="${isOwnProfile}">
 
