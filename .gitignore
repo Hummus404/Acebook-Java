@@ -12,3 +12,6 @@ dependency-reduced-pom.xml
 **/.DS_Store
 application.yml
 .env
+
+#images/*
+#!images/.gitkeep

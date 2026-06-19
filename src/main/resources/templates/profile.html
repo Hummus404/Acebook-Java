@@ -8,14 +8,15 @@
 </head>
 <body>
     <div th:replace="~{posts/base :: header}"></div>
+    <main class="feed-page">
         <h1>Profile</h1>
-        <section>
-            <img id="profile-pic" th:src="@{/images/{file}(file=${user.profilePicture})}" alt="user-img">
+        <section class="card" id="profile-header">
+            <img class="avatar avatar--lg" id="profile-pic" th:src="@{/images/{file}(file=${user.profilePicture})}" alt="user-img">
             <p id="username-text" th:text="${user.username}"></p>
         </section>
 
-        <section>
-            <div class="individual-post" th:each="post : ${posts}">
+        <section class="timeline-list">
+            <div class="individual-post post-card" th:each="post : ${posts}">
                 <img th:src="@{/images/{file}(file=${post.image})}" alt="">
                 <p th:text="${#temporals.format(post.getDateOfPost(), 'dd-MM-yyyy HH:MM')}"></p>
                 <p th:text="${post.getContent()}"></p>
@@ -63,6 +64,6 @@
 <!--        </div>-->
 
     </div>
-
+    </main>
 </body>
 </html>
