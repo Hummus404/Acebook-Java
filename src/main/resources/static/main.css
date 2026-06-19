@@ -209,7 +209,7 @@ nav ul li a:hover {
     align-items: center;
     gap: 16px;
     padding: 16px;
-    margin-botton: 20px;
+    margin-bottom: 20px;
 }
 
 .feed-page {
@@ -304,7 +304,7 @@ nav ul li a:hover {
     border-radius: 50%;
     object-fit: cover;
     border: none;
-    margin-botton: 0;
+    margin-bottom: 0;
 }
 
 .like-count {
