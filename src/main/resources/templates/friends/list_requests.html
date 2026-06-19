@@ -36,7 +36,10 @@
 
         <ul>
             <li th:each="friend : ${friends}">
-                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <img th:src="${friend.getProfilePicture() != null ? '/images/' + friend.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                     class="user-img"
+                     alt="Profile Picture"
+                     width="40"/>
                 <span th:text="${friend.username}"></span>
                 <a th:href="@{/profile/{username}(username=${friend.username})}">View Profile</a>
             </li>
@@ -53,7 +56,11 @@
 
         <ul>
             <li th:each="req : ${incomingRequests}">
-                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <img th:src="${req.getProfilePicture() != null ? '/images/' + req.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                     class="user-img"
+                     alt="Profile Picture"
+                     width="40"/>
+
                 <span th:text="${req.requester.username}"></span>
 
                 <form th:action="@{/friends/accept/{id}(id=${req.id})}" method="post" style="display:inline">
@@ -77,7 +84,10 @@
 
         <ul>
             <li th:each="req : ${sentRequests}">
-                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <img th:src="${req.getProfilePicture() != null ? '/images/' + req.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
+                     class="user-img"
+                     alt="Profile Picture"
+                     width="40"/>
                 <span th:text="${req.addressee.username}"></span>
                 <span>Pending...</span>
             </li>

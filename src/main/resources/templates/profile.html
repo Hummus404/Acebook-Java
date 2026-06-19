@@ -11,6 +11,7 @@
         <h1>Profile</h1>
         <section>
             <img id="profile-pic" th:src="@{/images/{file}(file=${user.profilePicture})}" alt="user-img">
+            
             <p id="username-text" th:text="${user.username}"></p>
         </section>
 
