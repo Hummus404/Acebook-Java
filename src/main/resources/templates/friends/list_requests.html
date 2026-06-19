@@ -9,6 +9,7 @@
 </head>
 <body>
     <div th:replace="~{posts/base :: header}"></div>
+    <main class="feed-page">
     <h1>My Friends</h1>
 
     <div class="tab-buttons">
@@ -34,10 +35,10 @@
             <p>You don't have any friends yet.</p>
         </div>
 
-        <ul>
-            <li th:each="friend : ${friends}">
-                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
-                <span th:text="${friend.username}"></span>
+        <ul class="timeline-list">
+            <li th:each="friend : ${friends}" class="card friend-row">
+                <img class="avatar" th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <span class="user-chip__name" th:text="${friend.username}"></span>
                 <a th:href="@{/profile/{username}(username=${friend.username})}">View Profile</a>
             </li>
         </ul>
@@ -51,17 +52,17 @@
             <p>No incoming friend requests.</p>
         </div>
 
-        <ul>
-            <li th:each="req : ${incomingRequests}">
-                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
-                <span th:text="${req.requester.username}"></span>
+        <ul class="timeline-list">
+            <li th:each="req : ${incomingRequests}" class="card friend-row">
+                <img class="avatar" th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <span class="user-chip__name" th:text="${req.requester.username}"></span>
 
                 <form th:action="@{/friends/accept/{id}(id=${req.id})}" method="post" style="display:inline">
-                    <button type="submit" class="accept-button">Accept</button>
+                    <button type="submit" class="btn">Accept</button>
                 </form>
 
                 <form th:action="@{/friends/decline/{id}(id=${req.id})}" method="post" style="display:inline">
-                    <button type="submit" class="decline-button">Decline</button>
+                    <button type="submit" class="btn--secondary">Decline</button>
                 </form>
             </li>
         </ul>
@@ -75,15 +76,16 @@
             <p>No pending sent requests.</p>
         </div>
 
-        <ul>
-            <li th:each="req : ${sentRequests}">
-                <img th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
-                <span th:text="${req.addressee.username}"></span>
+        <ul class="timeline-list">
+            <li th:each="req : ${sentRequests}" class="card friend-row">
+                <img class="avatar" th:src="@{/images/user_img.jpg}" alt="user-img" width="40"/>
+                <span class="user-chip__name" th:text="${req.addressee.username}"></span>
                 <span>Pending...</span>
             </li>
         </ul>
 
     </div>
+    </main>
 
     <script>
         function showTab(tabName) {
