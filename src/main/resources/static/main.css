@@ -217,7 +217,6 @@ nav ul li a:hover {
     color: var(--acebook-headline);
 }
 
-
 #greeting {
     padding: 14px 16px;
     margin-bottom: 20px;
@@ -383,6 +382,7 @@ nav ul li a:hover {
     }
 
     .feed-page {
+        max-width: 90%;
         padding: 24px 14px 48px;
     }
 
