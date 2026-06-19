@@ -12,8 +12,8 @@ date_of_post TIMESTAMP
 );
 
 INSERT INTO posts (content , poster, image, likes, date_of_post) VALUES
-('Woz I here? Nobody knows.', 1, 'alt text', 0,  NOW()),
-('Burritos for lunch. Wahoo.', 2, 'alt text', 0,  NOW());
+('Woz I here? Nobody knows.', 1, NULL, 0,  NOW()),
+('Burritos for lunch. Wahoo.', 2, NULL, 0,  NOW());
 
 CREATE TABLE comments (
 id BIGSERIAL PRIMARY KEY,
