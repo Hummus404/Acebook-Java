@@ -283,6 +283,8 @@ nav ul li a:hover {
     width: 100%;
     max-width: 100%;
     height: auto;
+    max-height: 480px;
+    object-fit: cover;
     border: 2px solid var(--acebook-secondary);
     border-radius: 6px;
     margin-bottom: 12px;
