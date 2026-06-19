@@ -257,6 +257,14 @@ nav ul li a:hover {
     gap: 18px;
 }
 
+.sort-button {
+    border: 1px solid var(--acebook-secondary); border-radius: 6px;
+    background: var(--acebook-highlight); color: #fff;
+    font-weight: 700; padding: 8px 14px; cursor: pointer;
+    text-decoration: none;
+}
+.sort-button:hover { background: var(--acebook-headline); }
+
 /* Post cards */
 .post-card {
     display: flex;
