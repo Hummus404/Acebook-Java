@@ -9,6 +9,7 @@
 </head>
 <body>
     <div th:replace="~{posts/base :: header}"></div>
+    <main class="feed-page">
     <h1>My Friends</h1>
 
     <div class="tab-buttons">
@@ -34,13 +35,13 @@
             <p>You don't have any friends yet.</p>
         </div>
 
-        <ul>
-            <li th:each="friend : ${friends}">
+        <ul class="timeline-list">
+            <li class="card friend-row" th:each="friend : ${friends}">
                 <img th:src="${friend.getProfilePicture() != null ? '/images/' + friend.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
-                     class="user-img"
+                     class="avatar"
                      alt="Profile Picture"
                      width="40"/>
-                <span th:text="${friend.username}"></span>
+                <span class="user-chip__name" th:text="${friend.username}"></span>
                 <a th:href="@{/profile/{username}(username=${friend.username})}">View Profile</a>
             </li>
         </ul>
@@ -54,21 +55,21 @@
             <p>No incoming friend requests.</p>
         </div>
 
-        <ul>
-            <li th:each="req : ${incomingRequests}">
+        <ul class="timeline-list">
+            <li class="card friend-row" th:each="req : ${incomingRequests}">
                 <img th:src="${req.requester.getProfilePicture() != null ? '/images/' + req.requester.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
-                     class="user-img"
+                     class="avatar"
                      alt="Profile Picture"
                      width="40"/>
 
-                <span th:text="${req.requester.username}"></span>
+                <span class="user-chip__name" th:text="${req.requester.username}"></span>
 
                 <form th:action="@{/friends/accept/{id}(id=${req.id})}" method="post" style="display:inline">
-                    <button type="submit" class="accept-button">Accept</button>
+                    <button type="submit" class="btn">Accept</button>
                 </form>
 
                 <form th:action="@{/friends/decline/{id}(id=${req.id})}" method="post" style="display:inline">
-                    <button type="submit" class="decline-button">Decline</button>
+                    <button type="submit" class="btn--secondary">Decline</button>
                 </form>
             </li>
         </ul>
@@ -82,18 +83,19 @@
             <p>No pending sent requests.</p>
         </div>
 
-        <ul>
-            <li th:each="req : ${sentRequests}">
+        <ul class="timeline-list">
+            <li th:each="req : ${sentRequests}" class="card friend-row">
                 <img th:src="${req.addressee.getProfilePicture() != null ? '/images/' + req.addressee.getProfilePicture() : '/images/defaultProfileAvatar.jpeg'}"
-                     class="user-img"
+                     class="avatar"
                      alt="Profile Picture"
                      width="40"/>
-                <span th:text="${req.addressee.username}"></span>
+                <span class="user-chip__name" th:text="${req.addressee.username}"></span>
                 <span>Pending...</span>
             </li>
         </ul>
 
     </div>
+    </main>
 
     <script>
         function showTab(tabName) {
