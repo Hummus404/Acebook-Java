@@ -37,7 +37,7 @@ public class SignUpController {
                 .getAuthentication()
                 .getPrincipal();
 
-        ModelAndView signUp = new ModelAndView("/sign-up");
+        ModelAndView signUp = new ModelAndView("sign-up");
 
         String emailAddress = principal.getAttributes().get("email").toString();
 
