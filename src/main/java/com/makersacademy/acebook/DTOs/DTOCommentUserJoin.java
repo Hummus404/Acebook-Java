@@ -15,8 +15,9 @@ public class DTOCommentUserJoin {
     private String first_name;
     private String surname;
     private String profile_picture;
+    private String username;
 
-    public DTOCommentUserJoin(Long id, String content, Integer post, Timestamp date_of_comment, String first_name, String surname, String profile_picture){
+    public DTOCommentUserJoin(Long id, String content, Integer post, Timestamp date_of_comment, String first_name, String surname, String profile_picture, String username){
         this.id = id;
         this.content = content;
         this.post = post;
@@ -24,6 +25,7 @@ public class DTOCommentUserJoin {
         this.first_name = first_name;
         this.surname = surname;
         this.profile_picture = profile_picture;
+        this.username = username;
     }
 
 

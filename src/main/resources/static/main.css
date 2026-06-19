@@ -417,4 +417,23 @@ nav ul li a:hover {
         padding: 24px 14px 48px;
     }
 
+
+}
+
+.profile_link {
+
+    text-decoration: none;
+
+}
+
+.profile_link:link{
+
+    color: #525252
+
+}
+
+.profile_link:visited{
+
+    color: #525252
+
 }

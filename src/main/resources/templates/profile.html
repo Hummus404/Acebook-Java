@@ -12,7 +12,7 @@
         <h1>Profile</h1>
         <section class="card" id="profile-header">
             <img class="avatar avatar--lg" id="profile-pic" th:src="@{/images/{file}(file=${user.profilePicture})}" alt="user-img">
-            <p id="username-text" th:text="${user.username}"></p>
+            <p id="username-text" th:text="${user.first_name} + ' ' + ${user.surname}"></p>
         </section>
 
         <section class="timeline-list">
@@ -34,7 +34,7 @@
         <!-- CASE 1: No relationship exists yet -> SHOW REQUEST BUTTON -->
         <div th:if="${friendshipStatus == 'NONE'}">
             <form th:action="@{/friends/request/{id}(id=${user.id})}" method="post">
-                <button type="submit">Add Friend</button>
+                <button class="sort-button" type="submit">Add Friend</button>
             </form>
         </div>
 
@@ -47,10 +47,10 @@
         <div th:if="${friendshipStatus == 'INCOMING_PENDING'}">
             <p>This user sent you a friend request!</p>
             <form th:action="@{/friends/accept/{id}(id=${friendshipId})}" method="post">
-                <button type="submit">Accept</button>
+                <button class="sort-button" type="submit">Accept</button>
             </form>
             <form th:action="@{/friends/decline/{id}(id=${friendshipId})}" method="post">
-                <button type="submit">Decline</button>
+                <button class="sort-button" type="submit">Decline</button>
             </form>
         </div>
 

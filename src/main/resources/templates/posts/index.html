@@ -39,7 +39,11 @@
 <!--                <img th:src="@{'/images/' + ${pv.post.profile_picture}}" class="logo"/>-->
 
                 <!-- username -->
-                <p th:text = "${pv.post.first_name} + ' ' + ${pv.post.surname} + ' - ' + ${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p>
+                <a class = "profile_link"  th:href="@{/profile/{username}(username=${pv.post.username})}">
+                    <p th:text = "${pv.post.first_name} + ' ' + ${pv.post.surname}"></p>
+                </a>
+                <span><p th:text = "${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p> </span>
+
             </div>
 
             <img th:if="${pv.post.image != null and !#strings.isEmpty(pv.post.image)}" th:src="@{'/images/' + ${pv.post.image}}" width="300"/>
@@ -58,7 +62,11 @@
                     <div class = "post-header">
 
                         <div><img th:src="@{'/images/' + ${comment.post.profile_picture}}" class = "logo"/></div>
-                        <p th:text = "${comment.post.first_name} + ' ' + ${comment.post.surname} + ' - ' + ${#dates.format(comment.post.date_of_comment, 'dd-MM-yyyy HH:MM')}"></p>
+
+                        <a class = "profile_link" th:href="@{/profile/{username}(username=${comment.post.username})}">
+                            <p th:text = "${comment.post.first_name} + ' ' + ${comment.post.surname}"></p>
+                        </a>
+                        <span><p th:text = "${#dates.format(pv.post.date_of_post, 'dd-MM-yyyy HH:MM')}"></p> </span>
 
                     </div>
 
