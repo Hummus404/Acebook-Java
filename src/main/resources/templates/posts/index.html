@@ -79,7 +79,7 @@
                 <form id="comment-form" action="#" th:action="@{/comment/new}" th:object="${comment}" method="post">
                     <p><input class="input-content-field" type="text" th:field="*{content}" placeholder = "Leave a comment" /></p>
                     <input type="hidden" name = "post" th:value = "${pv.post.id}" />
-                    <p><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+                    <p style="margin-top: 16px;"><input class="submit-btn" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
                 </form>
 <!--                "${pv.post.id}"-->
 
