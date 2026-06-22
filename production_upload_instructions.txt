@@ -1,0 +1,7 @@
+How to push feature or updates to acebook online,
+1. Successfully complete a merge into main
+2. Checkout into acebook-online branch.
+3. Merge main into acebook-online branch and merge new changes into this production branch. (ensure to keep any properties or settings unchanged)
+4. git status, git add ., git commit -m "drop a description of what this updates is and any other details that may be usefull"
+5. check render to ensure that upload is going live.
+Any questions errors or bugs in uploading just drop Umut a message, email or call.
